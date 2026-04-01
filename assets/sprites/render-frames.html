@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mole Sprite Frames</title>
+<style>
+  body { background: #1a1a2e; color: #fff; font-family: sans-serif; padding: 20px; }
+  h1 { margin-bottom: 4px; }
+  .subtitle { color: #888; margin-bottom: 24px; }
+  .frames { display: flex; flex-wrap: wrap; gap: 16px; }
+  .frame { text-align: center; }
+  .frame .label { font-size: 13px; color: #aaa; margin-bottom: 6px; }
+  svg { background: #111; border-radius: 8px; border: 1px solid #333; }
+</style>
+</head>
+<body>
+<h1>Mole Sprite Sheet - All Frames</h1>
+<p class="subtitle">6 animation frames, 256x256 each</p>
+<div class="frames">
+
+<!-- FRAME 1: HIDDEN -->
+<div class="frame">
+<div class="label">1. Hidden</div>
+<svg xmlns="http://www.w3.org/2000/svg" width="220" height="220" viewBox="0 0 256 256">
+  <defs>
+    <radialGradient id="dg1" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#c47a2a"/><stop offset="70%" stop-color="#a0611a"/><stop offset="100%" stop-color="#7a4a12"/></radialGradient>
+    <radialGradient id="gg1" cx="50%" cy="50%" r="55%"><stop offset="0%" stop-color="#4caf50"/><stop offset="60%" stop-color="#388e3c"/><stop offset="100%" stop-color="#1b5e20"/></radialGradient>
+    <radialGradient id="hs1" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#1a0a00"/><stop offset="70%" stop-color="#2a1505"/><stop offset="100%" stop-color="#4a2a10"/></radialGradient>
+  </defs>
+  <ellipse cx="128" cy="210" rx="110" ry="35" fill="url(#gg1)"/>
+  <path d="M30,210 Q32,195 28,185" stroke="#4caf50" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M40,205 Q44,190 38,178" stroke="#66bb6a" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M55,200 Q58,187 52,176" stroke="#4caf50" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M195,200 Q198,186 202,175" stroke="#4caf50" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M210,205 Q214,191 218,180" stroke="#66bb6a" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M225,210 Q228,196 232,187" stroke="#4caf50" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <ellipse cx="128" cy="195" rx="62" ry="18" fill="url(#hs1)"/>
+  <ellipse cx="128" cy="205" rx="85" ry="28" fill="url(#dg1)"/>
+  <circle cx="100" cy="200" r="3" fill="#8b6424" opacity="0.5"/>
+  <circle cx="145" cy="208" r="2.5" fill="#8b6424" opacity="0.4"/>
+  <circle cx="120" cy="212" r="2" fill="#7a4a12" opacity="0.5"/>
+</svg>
+</div>
+
+<!-- FRAME 2: EMERGING -->
+<div class="frame">
+<div class="label">2. Emerging</div>
+<svg xmlns="http://www.w3.org/2000/svg" width="220" height="220" viewBox="0 0 256 256">
+  <defs>
+    <radialGradient id="dg2" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#c47a2a"/><stop offset="70%" stop-color="#a0611a"/><stop offset="100%" stop-color="#7a4a12"/></radialGradient>
+    <radialGradient id="gg2" cx="50%" cy="50%" r="55%"><stop offset="0%" stop-color="#4caf50"/><stop offset="60%" stop-color="#388e3c"/><stop offset="100%" stop-color="#1b5e20"/></radialGradient>
+    <radialGradient id="hs2" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#1a0a00"/><stop offset="70%" stop-color="#2a1505"/><stop offset="100%" stop-color="#4a2a10"/></radialGradient>
+    <radialGradient id="fg2" cx="45%" cy="35%" r="55%"><stop offset="0%" stop-color="#d4a055"/><stop offset="60%" stop-color="#b8863c"/><stop offset="100%" stop-color="#8b6424"/></radialGradient>
+    <clipPath id="ce2"><rect x="0" y="0" width="256" height="185"/></clipPath>
+  </defs>
+  <ellipse cx="128" cy="210" rx="110" ry="35" fill="url(#gg2)"/>
+  <path d="M30,210 Q32,195 28,185" stroke="#4caf50" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M55,200 Q58,187 52,176" stroke="#4caf50" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M195,200 Q198,186 202,175" stroke="#4caf50" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M225,210 Q228,196 232,187" stroke="#4caf50" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <ellipse cx="128" cy="195" rx="62" ry="18" fill="url(#hs2)"/>
+  <g clip-path="url(#ce2)">
+    <g transform="translate(0,40)">
+      <ellipse cx="128" cy="140" rx="42" ry="38" fill="url(#fg2)"/>
+      <ellipse cx="94" cy="115" rx="8" ry="6" fill="#b8863c"/>
+      <ellipse cx="94" cy="115" rx="5" ry="3.5" fill="#d4a055"/>
+      <ellipse cx="162" cy="115" rx="8" ry="6" fill="#b8863c"/>
+      <ellipse cx="162" cy="115" rx="5" ry="3.5" fill="#d4a055"/>
+    </g>
+  </g>
+  <ellipse cx="128" cy="205" rx="85" ry="28" fill="url(#dg2)"/>
+  <circle cx="100" cy="185" r="2.5" fill="#a0611a" opacity="0.7"/>
+  <circle cx="155" cy="180" r="2" fill="#c47a2a" opacity="0.6"/>
+  <circle cx="115" cy="178" r="1.5" fill="#8b6424" opacity="0.5"/>
+</svg>
+</div>
+
+<!-- FRAME 3: HALF UP -->
+<div class="frame">
+<div class="label">3. Half Up</div>
+<svg xmlns="http://www.w3.org/2000/svg" width="220" height="220" viewBox="0 0 256 256">
+  <defs>
+    <radialGradient id="dg3" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#c47a2a"/><stop offset="70%" stop-color="#a0611a"/><stop offset="100%" stop-color="#7a4a12"/></radialGradient>
+    <radialGradient id="gg3" cx="50%" cy="50%" r="55%"><stop offset="0%" stop-color="#4caf50"/><stop offset="60%" stop-color="#388e3c"/><stop offset="100%" stop-color="#1b5e20"/></radialGradient>
+    <radialGradient id="hs3" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#1a0a00"/><stop offset="70%" stop-color="#2a1505"/><stop offset="100%" stop-color="#4a2a10"/></radialGradient>
+    <radialGradient id="fg3" cx="45%" cy="35%" r="55%"><stop offset="0%" stop-color="#d4a055"/><stop offset="60%" stop-color="#b8863c"/><stop offset="100%" stop-color="#8b6424"/></radialGradient>
+    <radialGradient id="cg3" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffffff"/><stop offset="70%" stop-color="#f5f0e8"/><stop offset="100%" stop-color="#e8e0d4"/></radialGradient>
+    <radialGradient id="ng3" cx="40%" cy="35%" r="50%"><stop offset="0%" stop-color="#555"/><stop offset="100%" stop-color="#222"/></radialGradient>
+    <clipPath id="ch3"><rect x="0" y="0" width="256" height="192"/></clipPath>
+  </defs>
+  <ellipse cx="128" cy="210" rx="110" ry="35" fill="url(#gg3)"/>
+  <path d="M30,210 Q32,195 28,185" stroke="#4caf50" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M55,200 Q58,187 52,176" stroke="#4caf50" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M195,200 Q198,186 202,175" stroke="#4caf50" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M225,210 Q228,196 232,187" stroke="#4caf50" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <ellipse cx="128" cy="195" rx="62" ry="18" fill="url(#hs3)"/>
+  <g clip-path="url(#ch3)">
+    <g transform="translate(0,18)">
+      <ellipse cx="128" cy="140" rx="42" ry="38" fill="url(#fg3)"/>
+      <ellipse cx="94" cy="115" rx="8" ry="6" fill="#b8863c"/>
+      <ellipse cx="94" cy="115" rx="5" ry="3.5" fill="#d4a055"/>
+      <ellipse cx="162" cy="115" rx="8" ry="6" fill="#b8863c"/>
+      <ellipse cx="162" cy="115" rx="5" ry="3.5" fill="#d4a055"/>
+      <ellipse cx="106" cy="148" rx="22" ry="16" fill="url(#cg3)"/>
+      <ellipse cx="150" cy="148" rx="22" ry="16" fill="url(#cg3)"/>
+      <ellipse cx="128" cy="140" rx="9" ry="7" fill="url(#ng3)"/>
+      <ellipse cx="125" cy="137" rx="3" ry="2" fill="#666" opacity="0.5"/>
+      <path d="M108,132 Q113,128 118,132" stroke="#222" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M138,132 Q143,128 148,132" stroke="#222" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <line x1="84" y1="142" x2="64" y2="136" stroke="#444" stroke-width="1.2" opacity="0.7"/>
+      <line x1="84" y1="148" x2="62" y2="148" stroke="#444" stroke-width="1.2" opacity="0.7"/>
+      <line x1="84" y1="154" x2="64" y2="160" stroke="#444" stroke-width="1.2" opacity="0.7"/>
+      <line x1="172" y1="142" x2="192" y2="136" stroke="#444" stroke-width="1.2" opacity="0.7"/>
+      <line x1="172" y1="148" x2="194" y2="148" stroke="#444" stroke-width="1.2" opacity="0.7"/>
+      <line x1="172" y1="154" x2="192" y2="160" stroke="#444" stroke-width="1.2" opacity="0.7"/>
+      <rect x="123" y="155" width="5" height="7" rx="1.5" fill="white" stroke="#ddd" stroke-width="0.5"/>
+      <rect x="129" y="155" width="5" height="7" rx="1.5" fill="white" stroke="#ddd" stroke-width="0.5"/>
+    </g>
+  </g>
+  <ellipse cx="128" cy="205" rx="85" ry="28" fill="url(#dg3)"/>
+  <circle cx="90" cy="178" r="3" fill="#a0611a" opacity="0.7"/>
+  <circle cx="165" cy="175" r="2.5" fill="#c47a2a" opacity="0.6"/>
+</svg>
+</div>
+
+<!-- FRAME 4: FULL UP (TAUNTING) -->
+<div class="frame">
+<div class="label">4. Full Up (Taunting)</div>
+<svg xmlns="http://www.w3.org/2000/svg" width="220" height="220" viewBox="0 0 256 256">
+  <defs>
+    <radialGradient id="dg4" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#c47a2a"/><stop offset="70%" stop-color="#a0611a"/><stop offset="100%" stop-color="#7a4a12"/></radialGradient>
+    <radialGradient id="gg4" cx="50%" cy="50%" r="55%"><stop offset="0%" stop-color="#4caf50"/><stop offset="60%" stop-color="#388e3c"/><stop offset="100%" stop-color="#1b5e20"/></radialGradient>
+    <radialGradient id="hs4" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#1a0a00"/><stop offset="70%" stop-color="#2a1505"/><stop offset="100%" stop-color="#4a2a10"/></radialGradient>
+    <radialGradient id="fg4" cx="45%" cy="35%" r="55%"><stop offset="0%" stop-color="#d4a055"/><stop offset="60%" stop-color="#b8863c"/><stop offset="100%" stop-color="#8b6424"/></radialGradient>
+    <radialGradient id="bg4" cx="50%" cy="40%" r="50%"><stop offset="0%" stop-color="#fff"/><stop offset="80%" stop-color="#f0ece4"/><stop offset="100%" stop-color="#e0d8cc"/></radialGradient>
+    <radialGradient id="cg4" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffffff"/><stop offset="70%" stop-color="#f5f0e8"/><stop offset="100%" stop-color="#e8e0d4"/></radialGradient>
+    <radialGradient id="ng4" cx="40%" cy="35%" r="50%"><stop offset="0%" stop-color="#555"/><stop offset="100%" stop-color="#222"/></radialGradient>
+  </defs>
+  <ellipse cx="128" cy="210" rx="110" ry="35" fill="url(#gg4)"/>
+  <path d="M30,210 Q32,195 28,185" stroke="#4caf50" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M55,200 Q58,187 52,176" stroke="#4caf50" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M195,200 Q198,186 202,175" stroke="#4caf50" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M225,210 Q228,196 232,187" stroke="#4caf50" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <ellipse cx="128" cy="195" rx="62" ry="18" fill="url(#hs4)"/>
+  <g transform="translate(0,-8)">
+    <!-- Body -->
+    <ellipse cx="128" cy="190" rx="38" ry="30" fill="url(#fg4)"/>
+    <ellipse cx="128" cy="188" rx="28" ry="24" fill="url(#bg4)"/>
+    <!-- Head -->
+    <ellipse cx="128" cy="140" rx="42" ry="38" fill="url(#fg4)"/>
+    <ellipse cx="94" cy="115" rx="8" ry="6" fill="#b8863c"/>
+    <ellipse cx="94" cy="115" rx="5" ry="3.5" fill="#d4a055"/>
+    <ellipse cx="162" cy="115" rx="8" ry="6" fill="#b8863c"/>
+    <ellipse cx="162" cy="115" rx="5" ry="3.5" fill="#d4a055"/>
+    <!-- Face -->
+    <ellipse cx="106" cy="148" rx="22" ry="16" fill="url(#cg4)"/>
+    <ellipse cx="150" cy="148" rx="22" ry="16" fill="url(#cg4)"/>
+    <ellipse cx="128" cy="140" rx="9" ry="7" fill="url(#ng4)"/>
+    <ellipse cx="125" cy="137" rx="3" ry="2" fill="#666" opacity="0.5"/>
+    <path d="M108,132 Q113,128 118,132" stroke="#222" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M138,132 Q143,128 148,132" stroke="#222" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M106,126 Q113,122 120,126" stroke="#8b6424" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M136,126 Q143,122 150,126" stroke="#8b6424" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <line x1="84" y1="142" x2="64" y2="136" stroke="#444" stroke-width="1.2" opacity="0.7"/>
+    <line x1="84" y1="148" x2="62" y2="148" stroke="#444" stroke-width="1.2" opacity="0.7"/>
+    <line x1="84" y1="154" x2="64" y2="160" stroke="#444" stroke-width="1.2" opacity="0.7"/>
+    <line x1="172" y1="142" x2="192" y2="136" stroke="#444" stroke-width="1.2" opacity="0.7"/>
+    <line x1="172" y1="148" x2="194" y2="148" stroke="#444" stroke-width="1.2" opacity="0.7"/>
+    <line x1="172" y1="154" x2="192" y2="160" stroke="#444" stroke-width="1.2" opacity="0.7"/>
+    <rect x="123" y="155" width="5" height="7" rx="1.5" fill="white" stroke="#ddd" stroke-width="0.5"/>
+    <rect x="129" y="155" width="5" height="7" rx="1.5" fill="white" stroke="#ddd" stroke-width="0.5"/>
+    <!-- Left paw -->
+    <ellipse cx="78" cy="155" rx="18" ry="12" fill="#b8863c" transform="rotate(-25,78,155)"/>
+    <circle cx="66" cy="142" r="10" fill="#c49a44"/>
+    <path d="M56,134 L52,126 L55,132" fill="#555" stroke="#444" stroke-width="0.8"/>
+    <path d="M60,131 L58,122 L62,129" fill="#555" stroke="#444" stroke-width="0.8"/>
+    <path d="M65,130 L65,120 L68,128" fill="#555" stroke="#444" stroke-width="0.8"/>
+    <!-- Right paw -->
+    <ellipse cx="178" cy="155" rx="18" ry="12" fill="#b8863c" transform="rotate(25,178,155)"/>
+    <circle cx="190" cy="142" r="10" fill="#c49a44"/>
+    <path d="M200,134 L204,126 L201,132" fill="#555" stroke="#444" stroke-width="0.8"/>
+    <path d="M196,131 L198,122 L194,129" fill="#555" stroke="#444" stroke-width="0.8"/>
+    <path d="M191,130 L191,120 L188,128" fill="#555" stroke="#444" stroke-width="0.8"/>
+  </g>
+  <ellipse cx="128" cy="205" rx="85" ry="28" fill="url(#dg4)"/>
+</svg>
+</div>
+
+<!-- FRAME 5: HIT -->
+<div class="frame">
+<div class="label">5. Hit (Bonked!)</div>
+<svg xmlns="http://www.w3.org/2000/svg" width="220" height="220" viewBox="0 0 256 256">
+  <defs>
+    <radialGradient id="dg5" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#c47a2a"/><stop offset="70%" stop-color="#a0611a"/><stop offset="100%" stop-color="#7a4a12"/></radialGradient>
+    <radialGradient id="gg5" cx="50%" cy="50%" r="55%"><stop offset="0%" stop-color="#4caf50"/><stop offset="60%" stop-color="#388e3c"/><stop offset="100%" stop-color="#1b5e20"/></radialGradient>
+    <radialGradient id="hs5" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#1a0a00"/><stop offset="70%" stop-color="#2a1505"/><stop offset="100%" stop-color="#4a2a10"/></radialGradient>
+    <radialGradient id="fg5" cx="45%" cy="35%" r="55%"><stop offset="0%" stop-color="#d4a055"/><stop offset="60%" stop-color="#b8863c"/><stop offset="100%" stop-color="#8b6424"/></radialGradient>
+    <radialGradient id="bg5" cx="50%" cy="40%" r="50%"><stop offset="0%" stop-color="#fff"/><stop offset="80%" stop-color="#f0ece4"/><stop offset="100%" stop-color="#e0d8cc"/></radialGradient>
+    <radialGradient id="cg5" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffffff"/><stop offset="70%" stop-color="#f5f0e8"/><stop offset="100%" stop-color="#e8e0d4"/></radialGradient>
+    <radialGradient id="ng5" cx="40%" cy="35%" r="50%"><stop offset="0%" stop-color="#555"/><stop offset="100%" stop-color="#222"/></radialGradient>
+  </defs>
+  <ellipse cx="128" cy="210" rx="110" ry="35" fill="url(#gg5)"/>
+  <path d="M30,210 Q32,195 28,185" stroke="#4caf50" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M55,200 Q58,187 52,176" stroke="#4caf50" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M195,200 Q198,186 202,175" stroke="#4caf50" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M225,210 Q228,196 232,187" stroke="#4caf50" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <ellipse cx="128" cy="195" rx="62" ry="18" fill="url(#hs5)"/>
+  <g transform="translate(0,2) scale(1,0.92)">
+    <g transform="translate(0,8)">
+      <ellipse cx="128" cy="190" rx="38" ry="30" fill="url(#fg5)"/>
+      <ellipse cx="128" cy="188" rx="28" ry="24" fill="url(#bg5)"/>
+      <ellipse cx="128" cy="140" rx="42" ry="38" fill="url(#fg5)"/>
+      <ellipse cx="94" cy="115" rx="8" ry="6" fill="#b8863c"/>
+      <ellipse cx="162" cy="115" rx="8" ry="6" fill="#b8863c"/>
+      <ellipse cx="106" cy="148" rx="22" ry="16" fill="url(#cg5)"/>
+      <ellipse cx="150" cy="148" rx="22" ry="16" fill="url(#cg5)"/>
+      <ellipse cx="128" cy="140" rx="9" ry="7" fill="url(#ng5)"/>
+      <!-- X eyes -->
+      <g stroke="#222" stroke-width="2.5" stroke-linecap="round">
+        <line x1="107" y1="127" x2="117" y2="137"/><line x1="117" y1="127" x2="107" y2="137"/>
+        <line x1="139" y1="127" x2="149" y2="137"/><line x1="149" y1="127" x2="139" y2="137"/>
+      </g>
+      <line x1="84" y1="148" x2="60" y2="152" stroke="#444" stroke-width="1.2" opacity="0.7"/>
+      <line x1="172" y1="148" x2="196" y2="152" stroke="#444" stroke-width="1.2" opacity="0.7"/>
+      <path d="M118,158 Q123,163 128,158 Q133,153 138,158" stroke="#666" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <!-- Drooping arms -->
+      <ellipse cx="82" cy="170" rx="16" ry="10" fill="#b8863c" transform="rotate(15,82,170)"/>
+      <circle cx="72" cy="176" r="8" fill="#c49a44"/>
+      <ellipse cx="174" cy="170" rx="16" ry="10" fill="#b8863c" transform="rotate(-15,174,170)"/>
+      <circle cx="184" cy="176" r="8" fill="#c49a44"/>
+    </g>
+  </g>
+  <ellipse cx="128" cy="205" rx="85" ry="28" fill="url(#dg5)"/>
+  <!-- Stars -->
+  <polygon points="105,100 107,95 112,95 108,99 110,104 105,101 100,104 102,99 98,95 103,95" fill="#ffeb3b"/>
+  <polygon points="128,90 130,85 135,85 131,89 133,94 128,91 123,94 125,89 121,85 126,85" fill="#ffeb3b" transform="scale(0.8)" transform-origin="128 90"/>
+  <polygon points="152,98 154,93 159,93 155,97 157,102 152,99 147,102 149,97 145,93 150,93" fill="#ffeb3b"/>
+  <!-- Impact lines -->
+  <line x1="128" y1="75" x2="128" y2="65" stroke="#ff5722" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+  <line x1="110" y1="80" x2="103" y2="72" stroke="#ff5722" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+  <line x1="146" y1="80" x2="153" y2="72" stroke="#ff5722" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+</svg>
+</div>
+
+<!-- FRAME 6: RETREATING -->
+<div class="frame">
+<div class="label">6. Retreating</div>
+<svg xmlns="http://www.w3.org/2000/svg" width="220" height="220" viewBox="0 0 256 256">
+  <defs>
+    <radialGradient id="dg6" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#c47a2a"/><stop offset="70%" stop-color="#a0611a"/><stop offset="100%" stop-color="#7a4a12"/></radialGradient>
+    <radialGradient id="gg6" cx="50%" cy="50%" r="55%"><stop offset="0%" stop-color="#4caf50"/><stop offset="60%" stop-color="#388e3c"/><stop offset="100%" stop-color="#1b5e20"/></radialGradient>
+    <radialGradient id="hs6" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#1a0a00"/><stop offset="70%" stop-color="#2a1505"/><stop offset="100%" stop-color="#4a2a10"/></radialGradient>
+    <radialGradient id="fg6" cx="45%" cy="35%" r="55%"><stop offset="0%" stop-color="#d4a055"/><stop offset="60%" stop-color="#b8863c"/><stop offset="100%" stop-color="#8b6424"/></radialGradient>
+    <clipPath id="cr6"><rect x="0" y="0" width="256" height="185"/></clipPath>
+  </defs>
+  <ellipse cx="128" cy="210" rx="110" ry="35" fill="url(#gg6)"/>
+  <path d="M30,210 Q32,195 28,185" stroke="#4caf50" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M55,200 Q58,187 52,176" stroke="#4caf50" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M195,200 Q198,186 202,175" stroke="#4caf50" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M225,210 Q228,196 232,187" stroke="#4caf50" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <ellipse cx="128" cy="195" rx="62" ry="18" fill="url(#hs6)"/>
+  <g clip-path="url(#cr6)">
+    <g transform="translate(0,36)">
+      <ellipse cx="128" cy="140" rx="42" ry="38" fill="url(#fg6)"/>
+      <ellipse cx="94" cy="115" rx="8" ry="6" fill="#b8863c"/>
+      <ellipse cx="94" cy="115" rx="5" ry="3.5" fill="#d4a055"/>
+      <ellipse cx="162" cy="115" rx="8" ry="6" fill="#b8863c"/>
+      <ellipse cx="162" cy="115" rx="5" ry="3.5" fill="#d4a055"/>
+      <g stroke="#222" stroke-width="2.5" stroke-linecap="round">
+        <line x1="107" y1="127" x2="117" y2="137"/><line x1="117" y1="127" x2="107" y2="137"/>
+        <line x1="139" y1="127" x2="149" y2="137"/><line x1="149" y1="127" x2="139" y2="137"/>
+      </g>
+    </g>
+  </g>
+  <ellipse cx="128" cy="205" rx="85" ry="28" fill="url(#dg6)"/>
+  <polygon points="118,168 119.2,165.4 122,165.4 119.8,167.2 120.6,170 118,168.2 115.4,170 116.2,167.2 114,165.4 116.8,165.4" fill="#ffeb3b" opacity="0.5"/>
+  <polygon points="140,165 141,163 143.2,163 141.4,164.4 142,166.4 140,165.2 138,166.4 138.6,164.4 136.8,163 139,163" fill="#ffeb3b" opacity="0.4"/>
+</svg>
+</div>
+
+</div>
+</body>
+</html>
