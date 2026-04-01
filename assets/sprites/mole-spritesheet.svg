@@ -1,0 +1,339 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1536 256" width="1536" height="256">
+  <!-- Mole Sprite Sheet: 6 frames, each 256x256 -->
+  <!-- Frame order: hidden, emerging, half-up, full-up, hit, retreating -->
+
+  <defs>
+    <!-- Dirt/earth gradient -->
+    <radialGradient id="dirtGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#c47a2a"/>
+      <stop offset="70%" stop-color="#a0611a"/>
+      <stop offset="100%" stop-color="#7a4a12"/>
+    </radialGradient>
+
+    <!-- Grass gradient -->
+    <radialGradient id="grassGrad" cx="50%" cy="50%" r="55%">
+      <stop offset="0%" stop-color="#4caf50"/>
+      <stop offset="60%" stop-color="#388e3c"/>
+      <stop offset="100%" stop-color="#1b5e20"/>
+    </radialGradient>
+
+    <!-- Mole body fur gradient -->
+    <radialGradient id="furGrad" cx="45%" cy="35%" r="55%">
+      <stop offset="0%" stop-color="#d4a055"/>
+      <stop offset="60%" stop-color="#b8863c"/>
+      <stop offset="100%" stop-color="#8b6424"/>
+    </radialGradient>
+
+    <!-- Belly gradient -->
+    <radialGradient id="bellyGrad" cx="50%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="80%" stop-color="#f0ece4"/>
+      <stop offset="100%" stop-color="#e0d8cc"/>
+    </radialGradient>
+
+    <!-- Cheek gradient -->
+    <radialGradient id="cheekGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="70%" stop-color="#f5f0e8"/>
+      <stop offset="100%" stop-color="#e8e0d4"/>
+    </radialGradient>
+
+    <!-- Nose gradient -->
+    <radialGradient id="noseGrad" cx="40%" cy="35%" r="50%">
+      <stop offset="0%" stop-color="#555555"/>
+      <stop offset="100%" stop-color="#222222"/>
+    </radialGradient>
+
+    <!-- Hole shadow -->
+    <radialGradient id="holeShadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1a0a00"/>
+      <stop offset="70%" stop-color="#2a1505"/>
+      <stop offset="100%" stop-color="#4a2a10"/>
+    </radialGradient>
+
+    <!-- Star for hit effect -->
+    <polygon id="star" points="0,-8 2,-3 7,-3 3,1 5,6 0,3 -5,6 -3,1 -7,-3 -2,-3" fill="#ffeb3b"/>
+
+    <!-- Grass base group -->
+    <g id="grassBase">
+      <ellipse cx="128" cy="210" rx="110" ry="35" fill="url(#grassGrad)"/>
+      <!-- Grass blades -->
+      <path d="M30,210 Q32,195 28,185" stroke="#4caf50" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M40,205 Q44,190 38,178" stroke="#66bb6a" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M55,200 Q58,187 52,176" stroke="#4caf50" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M195,200 Q198,186 202,175" stroke="#4caf50" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M210,205 Q214,191 218,180" stroke="#66bb6a" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M225,210 Q228,196 232,187" stroke="#4caf50" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <!-- Additional grass tufts -->
+      <path d="M70,197 Q73,183 68,172" stroke="#388e3c" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M180,197 Q184,183 188,173" stroke="#388e3c" stroke-width="2" fill="none" stroke-linecap="round"/>
+    </g>
+
+    <!-- Dirt mound group -->
+    <g id="dirtMound">
+      <ellipse cx="128" cy="205" rx="85" ry="28" fill="url(#dirtGrad)"/>
+      <!-- Dirt texture spots -->
+      <circle cx="100" cy="200" r="3" fill="#8b6424" opacity="0.5"/>
+      <circle cx="145" cy="208" r="2.5" fill="#8b6424" opacity="0.4"/>
+      <circle cx="120" cy="212" r="2" fill="#7a4a12" opacity="0.5"/>
+      <circle cx="160" cy="198" r="2.5" fill="#7a4a12" opacity="0.4"/>
+      <circle cx="85" cy="207" r="2" fill="#a0611a" opacity="0.3"/>
+      <circle cx="170" cy="205" r="3" fill="#7a4a12" opacity="0.3"/>
+    </g>
+
+    <!-- Hole opening (dark ellipse) -->
+    <g id="holeOpening">
+      <ellipse cx="128" cy="195" rx="62" ry="18" fill="url(#holeShadow)"/>
+    </g>
+
+    <!-- Clip path for mole emerging from hole -->
+    <clipPath id="clipHidden">
+      <rect x="0" y="0" width="256" height="170"/>
+    </clipPath>
+    <clipPath id="clipEmerging">
+      <rect x="0" y="0" width="256" height="185"/>
+    </clipPath>
+    <clipPath id="clipHalfUp">
+      <rect x="0" y="0" width="256" height="192"/>
+    </clipPath>
+    <clipPath id="clipFull">
+      <rect x="0" y="0" width="256" height="256"/>
+    </clipPath>
+
+    <!-- Mole head -->
+    <g id="moleHead">
+      <!-- Main head shape -->
+      <ellipse cx="128" cy="140" rx="42" ry="38" fill="url(#furGrad)"/>
+      <!-- Ears -->
+      <ellipse cx="94" cy="115" rx="8" ry="6" fill="#b8863c"/>
+      <ellipse cx="94" cy="115" rx="5" ry="3.5" fill="#d4a055"/>
+      <ellipse cx="162" cy="115" rx="8" ry="6" fill="#b8863c"/>
+      <ellipse cx="162" cy="115" rx="5" ry="3.5" fill="#d4a055"/>
+    </g>
+
+    <!-- Mole face features -->
+    <g id="moleFace">
+      <!-- Left cheek -->
+      <ellipse cx="106" cy="148" rx="22" ry="16" fill="url(#cheekGrad)"/>
+      <!-- Right cheek -->
+      <ellipse cx="150" cy="148" rx="22" ry="16" fill="url(#cheekGrad)"/>
+
+      <!-- Nose -->
+      <ellipse cx="128" cy="140" rx="9" ry="7" fill="url(#noseGrad)"/>
+      <!-- Nose highlight -->
+      <ellipse cx="125" cy="137" rx="3" ry="2" fill="#666" opacity="0.5"/>
+
+      <!-- Eyes (squinting/happy) -->
+      <path d="M108,132 Q113,128 118,132" stroke="#222" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M138,132 Q143,128 148,132" stroke="#222" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+      <!-- Eyebrows -->
+      <path d="M106,126 Q113,122 120,126" stroke="#8b6424" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M136,126 Q143,122 150,126" stroke="#8b6424" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+      <!-- Whiskers left -->
+      <line x1="84" y1="142" x2="64" y2="136" stroke="#444" stroke-width="1.2" opacity="0.7"/>
+      <line x1="84" y1="148" x2="62" y2="148" stroke="#444" stroke-width="1.2" opacity="0.7"/>
+      <line x1="84" y1="154" x2="64" y2="160" stroke="#444" stroke-width="1.2" opacity="0.7"/>
+
+      <!-- Whiskers right -->
+      <line x1="172" y1="142" x2="192" y2="136" stroke="#444" stroke-width="1.2" opacity="0.7"/>
+      <line x1="172" y1="148" x2="194" y2="148" stroke="#444" stroke-width="1.2" opacity="0.7"/>
+      <line x1="172" y1="154" x2="192" y2="160" stroke="#444" stroke-width="1.2" opacity="0.7"/>
+
+      <!-- Teeth -->
+      <rect x="123" y="155" width="5" height="7" rx="1.5" fill="white" stroke="#ddd" stroke-width="0.5"/>
+      <rect x="129" y="155" width="5" height="7" rx="1.5" fill="white" stroke="#ddd" stroke-width="0.5"/>
+    </g>
+
+    <!-- Mole body -->
+    <g id="moleBody">
+      <ellipse cx="128" cy="190" rx="38" ry="30" fill="url(#furGrad)"/>
+      <!-- White belly -->
+      <ellipse cx="128" cy="188" rx="28" ry="24" fill="url(#bellyGrad)"/>
+    </g>
+
+    <!-- Left paw raised -->
+    <g id="leftPawUp">
+      <!-- Arm -->
+      <ellipse cx="78" cy="155" rx="18" ry="12" fill="#b8863c" transform="rotate(-25,78,155)"/>
+      <!-- Paw -->
+      <circle cx="66" cy="142" r="10" fill="#c49a44"/>
+      <!-- Claws -->
+      <path d="M56,134 L52,126 L55,132" fill="#555" stroke="#444" stroke-width="0.8"/>
+      <path d="M60,131 L58,122 L62,129" fill="#555" stroke="#444" stroke-width="0.8"/>
+      <path d="M65,130 L65,120 L68,128" fill="#555" stroke="#444" stroke-width="0.8"/>
+      <!-- Paw pad -->
+      <ellipse cx="66" cy="144" rx="5" ry="4" fill="#d4a055" opacity="0.6"/>
+    </g>
+
+    <!-- Right paw raised -->
+    <g id="rightPawUp">
+      <ellipse cx="178" cy="155" rx="18" ry="12" fill="#b8863c" transform="rotate(25,178,155)"/>
+      <circle cx="190" cy="142" r="10" fill="#c49a44"/>
+      <path d="M200,134 L204,126 L201,132" fill="#555" stroke="#444" stroke-width="0.8"/>
+      <path d="M196,131 L198,122 L194,129" fill="#555" stroke="#444" stroke-width="0.8"/>
+      <path d="M191,130 L191,120 L188,128" fill="#555" stroke="#444" stroke-width="0.8"/>
+      <ellipse cx="190" cy="144" rx="5" ry="4" fill="#d4a055" opacity="0.6"/>
+    </g>
+
+    <!-- Hit face (dazed expression) -->
+    <g id="hitFace">
+      <!-- Left cheek -->
+      <ellipse cx="106" cy="148" rx="22" ry="16" fill="url(#cheekGrad)"/>
+      <!-- Right cheek -->
+      <ellipse cx="150" cy="148" rx="22" ry="16" fill="url(#cheekGrad)"/>
+
+      <!-- Nose -->
+      <ellipse cx="128" cy="140" rx="9" ry="7" fill="url(#noseGrad)"/>
+      <ellipse cx="125" cy="137" rx="3" ry="2" fill="#666" opacity="0.5"/>
+
+      <!-- Dazed eyes (X X) -->
+      <g stroke="#222" stroke-width="2.5" stroke-linecap="round">
+        <line x1="107" y1="127" x2="117" y2="137"/>
+        <line x1="117" y1="127" x2="107" y2="137"/>
+        <line x1="139" y1="127" x2="149" y2="137"/>
+        <line x1="149" y1="127" x2="139" y2="137"/>
+      </g>
+
+      <!-- Whiskers (droopy) -->
+      <line x1="84" y1="142" x2="62" y2="140" stroke="#444" stroke-width="1.2" opacity="0.7"/>
+      <line x1="84" y1="148" x2="60" y2="152" stroke="#444" stroke-width="1.2" opacity="0.7"/>
+      <line x1="84" y1="154" x2="62" y2="164" stroke="#444" stroke-width="1.2" opacity="0.7"/>
+      <line x1="172" y1="142" x2="194" y2="140" stroke="#444" stroke-width="1.2" opacity="0.7"/>
+      <line x1="172" y1="148" x2="196" y2="152" stroke="#444" stroke-width="1.2" opacity="0.7"/>
+      <line x1="172" y1="154" x2="194" y2="164" stroke="#444" stroke-width="1.2" opacity="0.7"/>
+
+      <!-- Dazed mouth (wavy) -->
+      <path d="M118,158 Q123,163 128,158 Q133,153 138,158" stroke="#666" stroke-width="2" fill="none" stroke-linecap="round"/>
+    </g>
+  </defs>
+
+  <!-- ==================== FRAME 1: HIDDEN (only hole) ==================== -->
+  <g transform="translate(0,0)">
+    <use href="#grassBase"/>
+    <use href="#holeOpening"/>
+    <use href="#dirtMound"/>
+  </g>
+
+  <!-- ==================== FRAME 2: EMERGING (top of head peeking) ==================== -->
+  <g transform="translate(256,0)">
+    <use href="#grassBase"/>
+    <use href="#holeOpening"/>
+
+    <!-- Mole peeking - only top of head visible -->
+    <g clip-path="url(#clipEmerging)">
+      <g transform="translate(0,40)">
+        <use href="#moleHead"/>
+      </g>
+    </g>
+
+    <use href="#dirtMound"/>
+
+    <!-- Dirt particles flying up -->
+    <circle cx="100" cy="185" r="2.5" fill="#a0611a" opacity="0.7"/>
+    <circle cx="155" cy="180" r="2" fill="#c47a2a" opacity="0.6"/>
+    <circle cx="115" cy="178" r="1.5" fill="#8b6424" opacity="0.5"/>
+    <circle cx="142" cy="182" r="2" fill="#a0611a" opacity="0.6"/>
+  </g>
+
+  <!-- ==================== FRAME 3: HALF UP (head + cheeks visible) ==================== -->
+  <g transform="translate(512,0)">
+    <use href="#grassBase"/>
+    <use href="#holeOpening"/>
+
+    <!-- Mole half visible -->
+    <g clip-path="url(#clipHalfUp)">
+      <g transform="translate(0,18)">
+        <use href="#moleHead"/>
+        <use href="#moleFace"/>
+      </g>
+    </g>
+
+    <use href="#dirtMound"/>
+
+    <!-- More dirt particles -->
+    <circle cx="90" cy="178" r="3" fill="#a0611a" opacity="0.7"/>
+    <circle cx="165" cy="175" r="2.5" fill="#c47a2a" opacity="0.6"/>
+    <circle cx="110" cy="172" r="2" fill="#8b6424" opacity="0.5"/>
+    <circle cx="150" cy="170" r="2" fill="#a0611a" opacity="0.5"/>
+    <circle cx="130" cy="176" r="1.5" fill="#c47a2a" opacity="0.4"/>
+  </g>
+
+  <!-- ==================== FRAME 4: FULLY UP (taunting pose - matches reference) ==================== -->
+  <g transform="translate(768,0)">
+    <use href="#grassBase"/>
+    <use href="#holeOpening"/>
+
+    <!-- Full mole with arms raised -->
+    <g transform="translate(0,-8)">
+      <use href="#moleBody"/>
+      <use href="#moleHead"/>
+      <use href="#moleFace"/>
+      <use href="#leftPawUp"/>
+      <use href="#rightPawUp"/>
+    </g>
+
+    <use href="#dirtMound"/>
+  </g>
+
+  <!-- ==================== FRAME 5: HIT (bonked - dazed with stars) ==================== -->
+  <g transform="translate(1024,0)">
+    <use href="#grassBase"/>
+    <use href="#holeOpening"/>
+
+    <!-- Mole hit - slightly squished, dazed -->
+    <g transform="translate(0,2) scale(1,0.92)">
+      <g transform="translate(0,8)">
+        <use href="#moleBody"/>
+        <use href="#moleHead"/>
+        <use href="#hitFace"/>
+        <!-- Arms drooping down -->
+        <ellipse cx="82" cy="170" rx="16" ry="10" fill="#b8863c" transform="rotate(15,82,170)"/>
+        <circle cx="72" cy="176" r="8" fill="#c49a44"/>
+        <ellipse cx="174" cy="170" rx="16" ry="10" fill="#b8863c" transform="rotate(-15,174,170)"/>
+        <circle cx="184" cy="176" r="8" fill="#c49a44"/>
+      </g>
+    </g>
+
+    <use href="#dirtMound"/>
+
+    <!-- Stars circling around head -->
+    <use href="#star" transform="translate(105,100) rotate(15)"/>
+    <use href="#star" transform="translate(128,90) rotate(-10) scale(0.8)"/>
+    <use href="#star" transform="translate(152,98) rotate(25)"/>
+    <use href="#star" transform="translate(140,80) rotate(-5) scale(0.6)"/>
+    <use href="#star" transform="translate(115,85) rotate(30) scale(0.7)"/>
+
+    <!-- Impact lines -->
+    <line x1="128" y1="75" x2="128" y2="65" stroke="#ff5722" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+    <line x1="110" y1="80" x2="103" y2="72" stroke="#ff5722" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+    <line x1="146" y1="80" x2="153" y2="72" stroke="#ff5722" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+  </g>
+
+  <!-- ==================== FRAME 6: RETREATING (sinking back, dazed) ==================== -->
+  <g transform="translate(1280,0)">
+    <use href="#grassBase"/>
+    <use href="#holeOpening"/>
+
+    <!-- Mole sinking - only top of dazed head visible -->
+    <g clip-path="url(#clipEmerging)">
+      <g transform="translate(0,36)">
+        <use href="#moleHead"/>
+        <!-- Simplified dazed eyes only (rest clipped) -->
+        <g stroke="#222" stroke-width="2.5" stroke-linecap="round">
+          <line x1="107" y1="127" x2="117" y2="137"/>
+          <line x1="117" y1="127" x2="107" y2="137"/>
+          <line x1="139" y1="127" x2="149" y2="137"/>
+          <line x1="149" y1="127" x2="139" y2="137"/>
+        </g>
+      </g>
+    </g>
+
+    <use href="#dirtMound"/>
+
+    <!-- Small stars fading -->
+    <use href="#star" transform="translate(118,168) scale(0.5)" opacity="0.5"/>
+    <use href="#star" transform="translate(140,165) scale(0.4)" opacity="0.4"/>
+  </g>
+</svg>
