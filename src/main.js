@@ -4,11 +4,11 @@ import { GameScene } from './scenes/GameScene.js';
 
 const config = {
   type: Phaser.AUTO,
-  width: 800,
-  height: 600,
+  width: window.innerWidth,
+  height: window.innerHeight,
   backgroundColor: '#87CEEB',
   scale: {
-    mode: Phaser.Scale.FIT,
+    mode: Phaser.Scale.RESIZE,
     autoCenter: Phaser.Scale.CENTER_BOTH,
   },
   scene: [BootScene, GameScene],

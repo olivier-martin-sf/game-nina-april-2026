@@ -13,35 +13,38 @@ export class BootScene extends Phaser.Scene {
 
   create() {
     const c = getCurrentPalette('grassyHills');
+    const W = this.cameras.main.width;
+    const H = this.cameras.main.height;
+    const cx = W / 2;
     const g = this.add.graphics();
 
     // Sky gradient background
     const top = Phaser.Display.Color.HexStringToColor(c.sky.top);
     const bot = Phaser.Display.Color.HexStringToColor(c.sky.bottom);
-    for (let y = 0; y < 600; y++) {
-      const t = y / 600;
+    for (let y = 0; y < H; y++) {
+      const t = y / H;
       g.fillStyle(Phaser.Display.Color.GetColor(
         Phaser.Math.Linear(top.red, bot.red, t),
         Phaser.Math.Linear(top.green, bot.green, t),
         Phaser.Math.Linear(top.blue, bot.blue, t),
       ));
-      g.fillRect(0, y, 800, 1);
+      g.fillRect(0, y, W, 1);
     }
 
     // Decorative hills at bottom
     g.fillStyle(hexToInt(c.hills.far));
-    this.drawHill(g, -50, 440, 400, 120);
-    this.drawHill(g, 450, 450, 400, 110);
+    this.drawHill(g, -50, H * 0.73, W * 0.5, H * 0.2);
+    this.drawHill(g, W * 0.55, H * 0.75, W * 0.5, H * 0.18);
 
     g.fillStyle(hexToInt(c.hills.near));
-    this.drawHill(g, 100, 500, 600, 100);
+    this.drawHill(g, W * 0.1, H * 0.83, W * 0.8, H * 0.17);
 
     // Ground
     g.fillStyle(hexToInt(c.ground));
-    g.fillRect(0, 560, 800, 40);
+    g.fillRect(0, H * 0.93, W, H * 0.07);
 
     // Title
-    const title = this.add.text(400, 200, 'Smash-a-Mole!', {
+    const title = this.add.text(cx, H * 0.3, 'Smash-a-Mole!', {
       fontSize: '58px',
       fontFamily: 'Arial Rounded MT Bold, Arial, sans-serif',
       color: c.ui.buttonBg,
@@ -51,33 +54,27 @@ export class BootScene extends Phaser.Scene {
 
     this.tweens.add({
       targets: title,
-      scaleX: 1.04,
-      scaleY: 1.04,
+      scaleX: 1.04, scaleY: 1.04,
       duration: 900,
-      yoyo: true,
-      repeat: -1,
+      yoyo: true, repeat: -1,
       ease: 'Sine.easeInOut',
     });
 
     // Draw a cute mole in the center
     const mole = this.add.graphics();
-    mole.x = 400;
-    mole.y = 360;
+    mole.x = cx;
+    mole.y = H * 0.55;
 
-    // Body
     mole.fillStyle(hexToInt(c.mole.body));
     mole.fillEllipse(0, 0, 70, 80);
-    // Belly
     mole.fillStyle(hexToInt(c.mole.cheeks));
     mole.fillEllipse(0, 10, 50, 50);
-    // Ears
     mole.fillStyle(hexToInt(c.mole.body));
     mole.fillCircle(-24, -36, 12);
     mole.fillCircle(24, -36, 12);
     mole.fillStyle(hexToInt(c.mole.nose));
     mole.fillCircle(-24, -36, 6);
     mole.fillCircle(24, -36, 6);
-    // Eyes
     mole.fillStyle(0xffffff);
     mole.fillCircle(-12, -18, 11);
     mole.fillCircle(12, -18, 11);
@@ -87,10 +84,8 @@ export class BootScene extends Phaser.Scene {
     mole.fillStyle(0xffffff);
     mole.fillCircle(-8, -20, 3);
     mole.fillCircle(16, -20, 3);
-    // Nose
     mole.fillStyle(hexToInt(c.mole.nose));
     mole.fillEllipse(0, -6, 14, 10);
-    // Mouth
     mole.lineStyle(2, 0x8B6F4E);
     mole.beginPath();
     mole.arc(0, 0, 7, 0, Math.PI, false);
@@ -98,15 +93,14 @@ export class BootScene extends Phaser.Scene {
 
     this.tweens.add({
       targets: mole,
-      y: 355,
+      y: H * 0.55 - 5,
       duration: 1200,
-      yoyo: true,
-      repeat: -1,
+      yoyo: true, repeat: -1,
       ease: 'Sine.easeInOut',
     });
 
     // Subtitle
-    const sub = this.add.text(400, 470, 'Click anywhere to start!', {
+    const sub = this.add.text(cx, H * 0.75, 'Click anywhere to start!', {
       fontSize: '22px',
       fontFamily: 'Arial, sans-serif',
       color: c.ui.scoreText,
@@ -118,19 +112,15 @@ export class BootScene extends Phaser.Scene {
       targets: sub,
       alpha: 0.4,
       duration: 700,
-      yoyo: true,
-      repeat: -1,
+      yoyo: true, repeat: -1,
     });
 
-    // Start background music on first click (browser autoplay policy)
     this.input.once('pointerdown', () => {
       resumeAudio();
 
-      // Play background music, looping, at low volume
       if (this.cache.audio.exists('bgMusic')) {
         const bgMusic = this.sound.add('bgMusic', { loop: true, volume: 0.3 });
         bgMusic.play();
-        // Store on registry so other scenes can access it
         this.registry.set('bgMusic', bgMusic);
       }
 
