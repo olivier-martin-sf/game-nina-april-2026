@@ -7,6 +7,10 @@ export class BootScene extends Phaser.Scene {
     super('Boot');
   }
 
+  preload() {
+    this.load.audio('bgMusic', 'assets/music/home-page-bg-music.m4a');
+  }
+
   create() {
     const c = getCurrentPalette('grassyHills');
     const g = this.add.graphics();
@@ -118,8 +122,18 @@ export class BootScene extends Phaser.Scene {
       repeat: -1,
     });
 
+    // Start background music on first click (browser autoplay policy)
     this.input.once('pointerdown', () => {
       resumeAudio();
+
+      // Play background music, looping, at low volume
+      if (this.cache.audio.exists('bgMusic')) {
+        const bgMusic = this.sound.add('bgMusic', { loop: true, volume: 0.3 });
+        bgMusic.play();
+        // Store on registry so other scenes can access it
+        this.registry.set('bgMusic', bgMusic);
+      }
+
       this.scene.start('Game');
     });
   }
