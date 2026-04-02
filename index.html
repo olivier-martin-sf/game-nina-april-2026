@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jouons avec les nombres !</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Backpack button (always visible) -->
+  <div id="backpack-btn" class="backpack-btn" onclick="showScreen('backpack')">
+    <span class="backpack-emoji">🎒</span>
+    <span id="backpack-badge" class="backpack-badge">0</span>
+    <div class="backpack-progress">
+      <div id="backpack-progress-bar" class="backpack-progress-bar"></div>
+    </div>
+  </div>
+
+  <!-- ==================== WELCOME SCREEN ==================== -->
+  <div id="screen-welcome" class="screen active">
+    <div class="welcome-container">
+      <h1 class="title-bounce">🌟 Jouons avec les nombres ! 🌟</h1>
+      <div class="welcome-mascot">🐱</div>
+      <p class="welcome-text">Comment tu t'appelles ?</p>
+      <input type="text" id="player-name" class="name-input" placeholder="Ton prénom..." maxlength="20">
+      <button class="btn btn-big btn-pink" onclick="startGame()">
+        C'est parti ! 🚀
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN MENU ==================== -->
+  <div id="screen-menu" class="screen">
+    <div class="menu-container">
+      <h1 class="menu-title">Choisis un jeu ! 🎮</h1>
+      <p id="menu-greeting" class="menu-greeting"></p>
+      <div class="game-cards">
+        <div class="game-card game-card-pink" onclick="showScreen('game1')">
+          <div class="game-card-emoji">🗣️</div>
+          <h2>Dis le nombre !</h2>
+          <p>Regarde le nombre et dis-le à voix haute</p>
+          <span class="game-card-range">70 → 100</span>
+        </div>
+        <div class="game-card game-card-blue" onclick="showScreen('game2')">
+          <div class="game-card-emoji">👂</div>
+          <h2>Écoute et choisis !</h2>
+          <p>Écoute le nombre et trouve la bonne carte</p>
+          <span class="game-card-range">0 → 100</span>
+        </div>
+        <div class="game-card game-card-purple" onclick="showScreen('game3')">
+          <div class="game-card-emoji">🚀</div>
+          <h2>La Grande Descente !</h2>
+          <p>Compte à rebours pour lancer la fusée</p>
+          <span class="game-card-range">Compte en descendant</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== GAME 1: DIS LE NOMBRE ==================== -->
+  <div id="screen-game1" class="screen">
+    <div class="game-topbar">
+      <button class="btn btn-small btn-back" onclick="showScreen('menu')">← Retour</button>
+      <div class="game-score">Score : <span id="game1-score">0</span></div>
+    </div>
+    <div class="game-container">
+      <h2 class="game-title">🗣️ Dis le nombre !</h2>
+      <p class="game-instruction">Regarde le nombre et dis-le à voix haute en français</p>
+
+      <div id="game1-card" class="number-card number-card-big">
+        <span id="game1-number" class="number-display">70</span>
+      </div>
+
+      <div id="game1-written" class="written-form"></div>
+
+      <!-- Microphone area -->
+      <div id="game1-mic-area" class="mic-area">
+        <button id="game1-mic-btn" class="btn btn-mic" onclick="game1Listen()">
+          <span class="mic-icon">🎤</span>
+          <span class="mic-text">Appuie et parle !</span>
+        </button>
+        <div id="game1-listening" class="listening-indicator hidden">
+          <div class="listening-dot"></div>
+          <span>J'écoute...</span>
+        </div>
+      </div>
+
+      <!-- Fallback: multiple choice (shown if no speech recognition) -->
+      <div id="game1-fallback" class="choices-grid hidden">
+      </div>
+
+      <div id="game1-feedback" class="feedback"></div>
+
+      <button id="game1-next" class="btn btn-big btn-green hidden" onclick="game1Next()">
+        Suivant →
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== GAME 2: ÉCOUTE ET CHOISIS ==================== -->
+  <div id="screen-game2" class="screen">
+    <div class="game-topbar">
+      <button class="btn btn-small btn-back" onclick="showScreen('menu')">← Retour</button>
+      <div class="game-score">Score : <span id="game2-score">0</span></div>
+    </div>
+    <div class="game-container">
+      <h2 class="game-title">👂 Écoute et choisis !</h2>
+      <p class="game-instruction">Écoute bien le nombre, puis trouve la bonne carte</p>
+
+      <div class="speaker-area">
+        <button id="game2-speak-btn" class="btn btn-speaker" onclick="game2Speak()">
+          <span class="speaker-icon">🔊</span>
+          <span>Écouter le nombre</span>
+        </button>
+        <button class="btn btn-small btn-repeat" onclick="game2Speak()">
+          🔁 Répéter
+        </button>
+      </div>
+
+      <div id="game2-choices" class="choices-grid">
+      </div>
+
+      <div id="game2-feedback" class="feedback"></div>
+
+      <button id="game2-next" class="btn btn-big btn-green hidden" onclick="game2Next()">
+        Suivant →
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== GAME 3: LA GRANDE DESCENTE ==================== -->
+  <div id="screen-game3" class="screen">
+    <div class="game-topbar">
+      <button class="btn btn-small btn-back" onclick="game3BackToLevels()">← Retour</button>
+      <div class="game-score">Score : <span id="game3-score">0</span></div>
+    </div>
+    <div class="game-container">
+      <!-- Level selection -->
+      <div id="game3-levels" class="game3-levels">
+        <h2 class="game-title">🚀 La Grande Descente !</h2>
+        <p class="game-instruction">Choisis ton niveau</p>
+        <div class="level-cards">
+          <div class="game-card game-card-green" onclick="game3Start('easy')">
+            <div class="game-card-emoji">🐣</div>
+            <h2>Petit pas</h2>
+            <p>Compte de 10 à 0</p>
+          </div>
+          <div class="game-card game-card-orange" onclick="game3Start('medium')">
+            <div class="game-card-emoji">🦊</div>
+            <h2>Les grands nombres</h2>
+            <p>Descends de 85 à 70</p>
+          </div>
+          <div class="game-card game-card-purple" onclick="game3Start('hard')">
+            <div class="game-card-emoji">🦅</div>
+            <h2>Sauts de fusée</h2>
+            <p>Compte en sautant !</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Game play area -->
+      <div id="game3-play" class="game3-play hidden">
+        <h2 class="game-title" id="game3-level-title">🚀 La Grande Descente !</h2>
+
+        <div class="rocket-area">
+          <div id="game3-staircase" class="staircase">
+            <!-- Steps generated by JS -->
+          </div>
+        </div>
+
+        <div id="game3-choices" class="choices-grid">
+        </div>
+
+        <div id="game3-feedback" class="feedback"></div>
+      </div>
+
+      <!-- Blast off screen -->
+      <div id="game3-blastoff" class="game3-blastoff hidden">
+        <div class="blastoff-content">
+          <div class="rocket-launch">🚀</div>
+          <h2 class="blastoff-text">DÉCOLLAGE !</h2>
+          <div class="confetti-container" id="confetti-container"></div>
+          <button class="btn btn-big btn-pink" onclick="game3BackToLevels()">
+            Encore ! 🎉
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== BACKPACK SCREEN ==================== -->
+  <div id="screen-backpack" class="screen">
+    <div class="game-topbar">
+      <button class="btn btn-small btn-back" onclick="showScreen('menu')">← Retour</button>
+    </div>
+    <div class="backpack-container">
+      <h2 class="game-title">🎒 Mon sac à dos</h2>
+      <p class="backpack-count">Tu as <span id="backpack-total">0</span> autocollant(s) !</p>
+      <div id="backpack-grid" class="backpack-grid">
+        <!-- Stickers rendered by JS -->
+      </div>
+      <div id="backpack-empty" class="backpack-empty">
+        <p>Ton sac est vide pour l'instant...</p>
+        <p>Réponds bien aux questions pour gagner des autocollants ! 🌟</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== STICKER AWARD MODAL ==================== -->
+  <div id="sticker-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2 class="modal-title">🎉 Bravo ! 🎉</h2>
+      <p>Tu as gagné un autocollant !</p>
+      <div id="sticker-reveal" class="sticker-reveal"></div>
+      <button class="btn btn-big btn-pink" onclick="closeStickerModal()">
+        Super ! Continuer →
+      </button>
+    </div>
+  </div>
+
+  <!-- Scripts (order matters: data first, then utilities, then games, then app) -->
+  <script src="js/french-numbers.js"></script>
+  <script src="js/speech.js"></script>
+  <script src="js/stickers.js"></script>
+  <script src="js/game-dis-le-nombre.js"></script>
+  <script src="js/game-ecoute.js"></script>
+  <script src="js/game-descente.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
