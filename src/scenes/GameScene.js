@@ -2,16 +2,18 @@ import Phaser from 'phaser';
 import { getCurrentPalette, hexToInt } from '../utils/colors.js';
 import { resumeAudio, playBonk, playWhoosh, playPop, playMiss, playCombo, playGameOver } from '../utils/sounds.js';
 
-// Hole positions as fractions of screen (x%, y%)
+// Hole positions as fractions within the play area (x%) and screen (y%)
 const HOLE_POSITIONS_PCT = [
-  { x: 0.19, y: 0.68 },
-  { x: 0.41, y: 0.65 },
-  { x: 0.64, y: 0.65 },
-  { x: 0.86, y: 0.68 },
-  { x: 0.30, y: 0.78 },
-  { x: 0.53, y: 0.77 },
-  { x: 0.75, y: 0.78 },
+  { x: 0.10, y: 0.65 },
+  { x: 0.37, y: 0.62 },
+  { x: 0.63, y: 0.62 },
+  { x: 0.90, y: 0.65 },
+  { x: 0.22, y: 0.76 },
+  { x: 0.50, y: 0.75 },
+  { x: 0.78, y: 0.76 },
 ];
+
+const MAX_PLAY_WIDTH = 700;
 
 const HOLE_WIDTH = 74;
 const HOLE_HEIGHT = 30;
@@ -21,7 +23,7 @@ const HAMMER_HEAD_W = 70;
 const HAMMER_HEAD_H = 48;
 const HAMMER_HANDLE_W = 14;
 const HAMMER_HANDLE_H = 90;
-const GAME_DURATION = 30;
+const GAME_DURATION = 45;
 
 export class GameScene extends Phaser.Scene {
   constructor() {
@@ -41,14 +43,18 @@ export class GameScene extends Phaser.Scene {
     this.W = W;
     this.H = H;
 
-    // Convert percentage positions to actual positions
+    // Cap play area width so holes stay reachable on wide screens
+    this.playWidth = Math.min(W, MAX_PLAY_WIDTH);
+    this.playLeft = (W - this.playWidth) / 2;
+
     this.holePositions = HOLE_POSITIONS_PCT.map(p => ({
-      x: Math.round(p.x * W),
+      x: Math.round(this.playLeft + p.x * this.playWidth),
       y: Math.round(p.y * H),
     }));
 
-    this.hammerRestY = H * 0.30;
-    this.hammerSmashY = H * 0.65;
+    // Hammer rests at the top, drops down on click
+    this.hammerRestY = H * 0.08;
+    this.hammerSmashY = H * 0.52; // pivot drops to here, then head rotates to hit moles
     this.hammerX = W / 2;
 
     this.drawBackground();
@@ -61,7 +67,7 @@ export class GameScene extends Phaser.Scene {
     this.startGameTimer();
 
     this.input.on('pointermove', (pointer) => {
-      this.hammerX = Phaser.Math.Clamp(pointer.x, 60, W - 60);
+      this.hammerX = Phaser.Math.Clamp(pointer.x, this.playLeft + 30, this.playLeft + this.playWidth - 30);
     });
 
     this.input.on('pointerdown', () => {
@@ -284,7 +290,7 @@ export class GameScene extends Phaser.Scene {
           ease: 'Sine.easeInOut',
         });
 
-        const stayTime = Phaser.Math.Between(700, 2200);
+        const stayTime = Phaser.Math.Between(2000, 4000);
         mole.hideTimer = this.time.delayedCall(stayTime, () => {
           if (!mole.isHit && mole.isUp) {
             this.combo = 0;
@@ -315,15 +321,42 @@ export class GameScene extends Phaser.Scene {
 
   createHammer() {
     const c = this.colors;
+
+    // Aiming target on the ground — always visible, follows hammer X
+    this.aimTarget = this.add.container(this.W / 2, this.H * 0.68);
+    this.aimTarget.setDepth(3);
+    const aimGfx = this.add.graphics();
+    // Soft glowing circle
+    aimGfx.fillStyle(0xFFD700, 0.12);
+    aimGfx.fillCircle(0, 0, 32);
+    aimGfx.lineStyle(2.5, 0xFFD700, 0.35);
+    aimGfx.strokeCircle(0, 0, 28);
+    aimGfx.lineStyle(1.5, 0xFFD700, 0.2);
+    aimGfx.lineBetween(-14, 0, 14, 0);
+    aimGfx.lineBetween(0, -14, 0, 14);
+    this.aimTarget.add(aimGfx);
+
+    // Pulse the aim target gently
+    this.tweens.add({
+      targets: this.aimTarget,
+      scaleX: 1.1, scaleY: 1.1,
+      duration: 800,
+      yoyo: true, repeat: -1,
+      ease: 'Sine.easeInOut',
+    });
+
+    // Impact shadow (grows when hammer drops)
+    this.hammerShadow = this.add.ellipse(this.W / 2, this.H * 0.70, 50, 14, 0x000000, 0.05);
+    this.hammerShadow.setDepth(4);
+
+    // Hammer container — pivot at TOP of handle (grip point)
+    // Starts at the top of the screen
     this.hammerContainer = this.add.container(this.W / 2, this.hammerRestY);
     this.hammerContainer.setDepth(100);
 
     const g = this.add.graphics();
 
-    this.hammerShadow = this.add.ellipse(this.W / 2, this.hammerSmashY + 10, 50, 14, 0x000000, 0.15);
-    this.hammerShadow.setDepth(4);
-
-    // Handle
+    // Handle — drawn downward from origin (grip at 0,0)
     g.fillStyle(hexToInt(c.hammer.handle));
     g.fillRoundedRect(-HAMMER_HANDLE_W / 2, 0, HAMMER_HANDLE_W, HAMMER_HANDLE_H, 5);
     g.lineStyle(1, 0x000000, 0.08);
@@ -331,21 +364,28 @@ export class GameScene extends Phaser.Scene {
       g.lineBetween(-HAMMER_HANDLE_W / 2 + 3, i, HAMMER_HANDLE_W / 2 - 3, i);
     }
 
-    // Head
+    // Head — at BOTTOM of handle (this is what hits the moles)
+    const headY = HAMMER_HANDLE_H - 4;
     g.fillStyle(hexToInt(c.hammer.head));
-    g.fillRoundedRect(-HAMMER_HEAD_W / 2, -HAMMER_HEAD_H + 8, HAMMER_HEAD_W, HAMMER_HEAD_H, 10);
+    g.fillRoundedRect(-HAMMER_HEAD_W / 2, headY, HAMMER_HEAD_W, HAMMER_HEAD_H, 10);
 
-    g.fillStyle(0x000000, 0.15);
-    g.fillRoundedRect(-HAMMER_HEAD_W / 2, -HAMMER_HEAD_H + 8 + HAMMER_HEAD_H - 12, HAMMER_HEAD_W, 12, { tl: 0, tr: 0, bl: 10, br: 10 });
-
+    // Head top highlight
     g.fillStyle(0xffffff, 0.3);
-    g.fillRoundedRect(-HAMMER_HEAD_W / 2 + 4, -HAMMER_HEAD_H + 12, HAMMER_HEAD_W - 8, 14, 6);
+    g.fillRoundedRect(-HAMMER_HEAD_W / 2 + 4, headY + 4, HAMMER_HEAD_W - 8, 14, 6);
 
+    // Head bottom darker edge
+    g.fillStyle(0x000000, 0.15);
+    g.fillRoundedRect(-HAMMER_HEAD_W / 2, headY + HAMMER_HEAD_H - 12, HAMMER_HEAD_W, 12, { tl: 0, tr: 0, bl: 10, br: 10 });
+
+    // Head side bands
     g.fillStyle(0x000000, 0.08);
-    g.fillRect(-HAMMER_HEAD_W / 2 + 6, -HAMMER_HEAD_H + 10, 4, HAMMER_HEAD_H - 6);
-    g.fillRect(HAMMER_HEAD_W / 2 - 10, -HAMMER_HEAD_H + 10, 4, HAMMER_HEAD_H - 6);
+    g.fillRect(-HAMMER_HEAD_W / 2 + 6, headY + 4, 4, HAMMER_HEAD_H - 8);
+    g.fillRect(HAMMER_HEAD_W / 2 - 10, headY + 4, 4, HAMMER_HEAD_H - 8);
 
     this.hammerContainer.add(g);
+
+    // Rest pose: upright at top of screen
+    this.hammerContainer.setAngle(0);
   }
 
   smashHammer() {
@@ -354,31 +394,44 @@ export class GameScene extends Phaser.Scene {
 
     playWhoosh();
 
+    // Phase 1: Drop straight down from top to near the moles
     this.tweens.add({
       targets: this.hammerContainer,
       y: this.hammerSmashY,
-      scaleX: 1.1, scaleY: 0.9,
-      duration: 80,
+      duration: 120,
       ease: 'Quad.easeIn',
       onComplete: () => {
-        const didHit = this.checkHits();
-        this.cameras.main.shake(80, 0.006);
-
-        if (!didHit) {
-          playMiss();
-          this.showMissEffect();
-          this.combo = 0;
-          this.updateComboText();
-        }
-
+        // Phase 2: Quick rotation to smash (head swings forward)
         this.tweens.add({
           targets: this.hammerContainer,
-          y: this.hammerRestY,
-          scaleX: 1, scaleY: 1,
-          duration: 350,
-          ease: 'Back.easeOut',
+          angle: 25,
+          scaleX: 1.1, scaleY: 0.95,
+          duration: 60,
+          ease: 'Quad.easeIn',
           onComplete: () => {
-            this.isSmashing = false;
+            // Impact!
+            const didHit = this.checkHits();
+            this.cameras.main.shake(80, 0.006);
+
+            if (!didHit) {
+              playMiss();
+              this.showMissEffect();
+              this.combo = 0;
+              this.updateComboText();
+            }
+
+            // Phase 3: Rise back up
+            this.tweens.add({
+              targets: this.hammerContainer,
+              y: this.hammerRestY,
+              angle: 0,
+              scaleX: 1, scaleY: 1,
+              duration: 400,
+              ease: 'Back.easeOut',
+              onComplete: () => {
+                this.isSmashing = false;
+              },
+            });
           },
         });
       },
@@ -473,7 +526,7 @@ export class GameScene extends Phaser.Scene {
 
   showMissEffect() {
     const x = this.hammerContainer.x;
-    const y = this.hammerSmashY + 5;
+    const y = this.H * 0.70;
     const c = this.colors;
 
     for (let i = 0; i < 6; i++) {
@@ -566,14 +619,14 @@ export class GameScene extends Phaser.Scene {
 
   startMoleTimer() {
     this.moleEvent = this.time.addEvent({
-      delay: 1200,
+      delay: 2500,
       callback: () => {
         this.popUpMole();
         const elapsed = GAME_DURATION - this.timeLeft;
-        if (elapsed > 10 && Math.random() < 0.3) {
-          this.time.delayedCall(150, () => this.popUpMole());
+        if (elapsed > 25 && Math.random() < 0.15) {
+          this.time.delayedCall(300, () => this.popUpMole());
         }
-        const newDelay = Math.max(350, 1200 - elapsed * 25);
+        const newDelay = Math.max(1200, 2500 - elapsed * 15);
         this.moleEvent.delay = newDelay;
       },
       loop: true,
@@ -655,9 +708,9 @@ export class GameScene extends Phaser.Scene {
       duration: 400, delay: 600,
     });
 
-    const rating = this.score >= 200 ? 'Amazing!' :
-                   this.score >= 100 ? 'Great job!' :
-                   this.score >= 50 ? 'Nice try!' : 'Keep practicing!';
+    const rating = this.score >= 150 ? 'Amazing!' :
+                   this.score >= 80 ? 'Great job!' :
+                   this.score >= 30 ? 'Nice try!' : 'Keep practicing!';
 
     const ratingText = this.add.text(cx, H * 0.56, rating, {
       fontSize: '28px',
@@ -705,8 +758,19 @@ export class GameScene extends Phaser.Scene {
         0.18,
       );
     }
+
+    // Aim target follows hammer X at mole level
+    if (this.aimTarget) {
+      this.aimTarget.x = this.hammerContainer.x;
+    }
+
+    // Impact shadow — grows as hammer drops closer to ground
     if (this.hammerShadow) {
       this.hammerShadow.x = this.hammerContainer.x;
+      const drop = (this.hammerContainer.y - this.hammerRestY) / (this.hammerSmashY - this.hammerRestY);
+      const p = Phaser.Math.Clamp(drop, 0, 1);
+      this.hammerShadow.setAlpha(0.05 + 0.25 * p);
+      this.hammerShadow.setScale(0.4 + 0.8 * p);
     }
   }
 }
