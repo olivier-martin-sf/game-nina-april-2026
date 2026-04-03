@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mole Sprite Sheet Preview</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #1a1a2e;
+      color: #e0e0e0;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      padding: 24px;
+    }
+    h1 { color: #fff; margin-bottom: 8px; }
+    h2 { color: #aaa; font-weight: normal; margin-bottom: 24px; }
+    h3 { color: #fff; margin: 24px 0 12px; }
+
+    .spritesheet-full {
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 32px;
+      overflow-x: auto;
+    }
+    .spritesheet-full img { height: 180px; image-rendering: optimizeQuality; }
+
+    .frames {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .frame-card {
+      background: #16213e;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+      width: 170px;
+    }
+    .frame-card .label {
+      font-size: 12px;
+      color: #88a;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .frame-card .frame-view {
+      width: 140px;
+      height: 140px;
+      margin: 0 auto;
+      overflow: hidden;
+      background: #0a0a1a;
+      border-radius: 4px;
+    }
+    .frame-card .frame-view svg { display: block; }
+
+    .animation-preview {
+      background: #16213e;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 24px;
+      text-align: center;
+      display: inline-block;
+    }
+    #animCanvas {
+      background: #0a0a1a;
+      border-radius: 4px;
+      display: block;
+      margin: 0 auto 16px;
+    }
+    .controls { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+    .controls button {
+      background: #4a6fa5;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 16px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+    .controls button:hover { background: #5a8fc5; }
+    .controls button.active { background: #e67e22; }
+  </style>
+</head>
+<body>
+  <h1>Mole Sprite Sheet</h1>
+  <h2>6 frames -- 256x256 each -- 1536x256 total</h2>
+
+  <h3>Full Sprite Sheet</h3>
+  <div class="spritesheet-full">
+    <img src="mole-spritesheet.svg" alt="Full sprite sheet">
+  </div>
+
+  <h3>Individual Frames</h3>
+  <div class="frames" id="framesContainer"></div>
+
+  <h3>Animation Preview</h3>
+  <div class="animation-preview">
+    <canvas id="animCanvas" width="256" height="256"></canvas>
+    <div class="controls">
+      <button onclick="playAnim('pop-up')" id="btn-pop-up">Pop Up</button>
+      <button onclick="playAnim('pop-down')" id="btn-pop-down">Pop Down</button>
+      <button onclick="playAnim('whacked')" id="btn-whacked">Whacked!</button>
+      <button onclick="playAnim('full-cycle')" id="btn-full-cycle">Full Cycle</button>
+    </div>
+  </div>
+
+  <script>
+    const frameNames = [
+      'Hidden', 'Emerging', 'Half Up', 'Full Up (Taunting)', 'Hit (Bonked)', 'Retreating'
+    ];
+    const frameDurations = [100, 150, 150, 800, 400, 200];
+
+    // Render individual frame cards
+    const container = document.getElementById('framesContainer');
+    frameNames.forEach((name, i) => {
+      const card = document.createElement('div');
+      card.className = 'frame-card';
+      card.innerHTML = `
+        <div class="label">Frame ${i + 1}: ${name}</div>
+        <div class="frame-view">
+          <svg viewBox="${i * 256} 0 256 256" width="140" height="140">
+            <use href="mole-spritesheet.svg#root" x="0" y="0"/>
+            <image href="mole-spritesheet.svg" x="0" y="0" width="1536" height="256"/>
+          </svg>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+    // Animation preview
+    const canvas = document.getElementById('animCanvas');
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+    img.src = 'mole-spritesheet.svg';
+
+    const animations = {
+      'pop-up': [0, 1, 2, 3],
+      'pop-down': [3, 2, 1, 0],
+      'whacked': [4, 5, 0],
+      'full-cycle': [0, 1, 2, 3, 3, 3, 4, 5, 0]
+    };
+
+    let currentAnim = null;
+    let animFrame = 0;
+    let animTimer = null;
+
+    function drawFrame(index) {
+      ctx.clearRect(0, 0, 256, 256);
+      ctx.fillStyle = '#0a0a1a';
+      ctx.fillRect(0, 0, 256, 256);
+      ctx.drawImage(img, index * 256, 0, 256, 256, 0, 0, 256, 256);
+    }
+
+    function playAnim(name) {
+      if (animTimer) clearTimeout(animTimer);
+
+      document.querySelectorAll('.controls button').forEach(b => b.classList.remove('active'));
+      document.getElementById('btn-' + name)?.classList.add('active');
+
+      currentAnim = animations[name];
+      animFrame = 0;
+      stepAnim();
+    }
+
+    function stepAnim() {
+      if (!currentAnim || animFrame >= currentAnim.length) {
+        currentAnim = null;
+        return;
+      }
+      const frameIdx = currentAnim[animFrame];
+      drawFrame(frameIdx);
+      const duration = frameDurations[frameIdx];
+      animFrame++;
+      animTimer = setTimeout(stepAnim, duration);
+    }
+
+    img.onload = () => drawFrame(0);
+  </script>
+</body>
+</html>

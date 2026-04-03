@@ -15,15 +15,16 @@ const HOLE_POSITIONS_PCT = [
 
 const MAX_PLAY_WIDTH = 700;
 
-const HOLE_WIDTH = 74;
-const HOLE_HEIGHT = 30;
-const MOLE_BODY_W = 44;
-const MOLE_BODY_H = 54;
+const HOLE_WIDTH = 100;
+const HOLE_HEIGHT = 36;
+const MOLE_BODY_W = 64;
+const MOLE_BODY_H = 76;
+const MOLE_SCALE = 0.7;
 const HAMMER_HEAD_W = 70;
 const HAMMER_HEAD_H = 48;
 const HAMMER_HANDLE_W = 14;
 const HAMMER_HANDLE_H = 90;
-const GAME_DURATION = 45;
+const GAME_DURATION = 60;
 
 export class GameScene extends Phaser.Scene {
   constructor() {
@@ -158,12 +159,18 @@ export class GameScene extends Phaser.Scene {
 
   createHoleBacks() {
     const c = this.colors;
-    const g = this.add.graphics();
-    g.setDepth(5);
 
     this.holePositions.forEach((pos) => {
-      g.fillStyle(hexToInt(c.hole.inside));
+      const g = this.add.graphics();
+      g.setDepth(5);
+
+      // Deep dark hole interior
+      g.fillStyle(0x1a0e06);
       g.fillEllipse(pos.x, pos.y, HOLE_WIDTH, HOLE_HEIGHT);
+
+      // Slightly lighter inner ring for depth
+      g.fillStyle(hexToInt(c.hole.inside), 0.7);
+      g.fillEllipse(pos.x, pos.y - 1, HOLE_WIDTH - 8, HOLE_HEIGHT - 4);
     });
   }
 
@@ -174,92 +181,88 @@ export class GameScene extends Phaser.Scene {
       const front = this.add.graphics();
       front.setDepth(15);
 
-      front.fillStyle(hexToInt(c.hills.near));
-      front.fillEllipse(pos.x, pos.y + 10, HOLE_WIDTH + 16, 24);
+      // Dirt mound — wider, layered for 3D look
+      // Outer mound shadow
+      front.fillStyle(0x000000, 0.08);
+      front.fillEllipse(pos.x, pos.y + 14, HOLE_WIDTH + 28, 30);
 
-      front.lineStyle(2, hexToInt(c.hole.rim), 0.6);
+      // Main dirt mound
+      front.fillStyle(hexToInt(c.ground));
+      front.fillEllipse(pos.x, pos.y + 10, HOLE_WIDTH + 22, 26);
+
+      // Lighter dirt highlight on top
+      front.fillStyle(hexToInt(c.ground), 0.6);
+      front.fillEllipse(pos.x, pos.y + 7, HOLE_WIDTH + 12, 16);
+
+      // Dirt texture spots
+      const spots = [
+        { dx: -20, dy: 8, r: 2.5 },
+        { dx: 15, dy: 12, r: 2 },
+        { dx: -8, dy: 14, r: 1.5 },
+        { dx: 25, dy: 9, r: 2 },
+        { dx: -30, dy: 11, r: 1.8 },
+      ];
+      spots.forEach(s => {
+        front.fillStyle(hexToInt(c.hole.rim), 0.3);
+        front.fillCircle(pos.x + s.dx, pos.y + s.dy, s.r);
+      });
+
+      // Green grass/hill fill covers below the mound (prevents mole leak)
+      front.fillStyle(hexToInt(c.hills.near));
+      front.fillRect(pos.x - HOLE_WIDTH / 2 - 20, pos.y + 18, HOLE_WIDTH + 40, 40);
+
+      // Rim highlight — top arc of hole
+      front.lineStyle(2.5, hexToInt(c.hole.rim), 0.5);
       front.beginPath();
       for (let i = 0; i <= 20; i++) {
         const t = i / 20;
-        const angle = Math.PI * t;
+        const angle = Math.PI + Math.PI * t;
         const rx = (HOLE_WIDTH / 2) * Math.cos(angle);
         const ry = (HOLE_HEIGHT / 2) * Math.sin(angle);
         if (i === 0) front.moveTo(pos.x + rx, pos.y + ry);
         else front.lineTo(pos.x + rx, pos.y + ry);
       }
       front.strokePath();
+
+      // Inner shadow at bottom of hole
+      front.fillStyle(0x000000, 0.15);
+      front.fillEllipse(pos.x, pos.y + 4, HOLE_WIDTH - 10, 10);
     });
   }
 
   // ─── MOLES ──────────────────────────────────────────────
 
   createMoles() {
-    const c = this.colors;
-
     this.holePositions.forEach((pos, i) => {
-      const container = this.add.container(pos.x, pos.y + 30);
-      container.setDepth(10);
+      const sprite = this.add.sprite(pos.x, pos.y + 30, 'mole', 0);
+      sprite.setDepth(10);
+      sprite.setScale(MOLE_SCALE);
+      sprite.setVisible(false);
 
-      const body = this.add.graphics();
-      this.drawMole(body, c);
-      container.add(body);
-      container.setVisible(false);
+      // Geometry mask: only show mole above the hole line
+      // The mask shape is a tall rect from top of screen down to just below hole center
+      const maskGraphics = this.make.graphics({ x: 0, y: 0 });
+      maskGraphics.fillStyle(0xffffff);
+      maskGraphics.fillRect(
+        pos.x - HOLE_WIDTH,
+        0,
+        HOLE_WIDTH * 2,
+        pos.y + HOLE_HEIGHT / 2 - 2,
+      );
+      const mask = maskGraphics.createGeometryMask();
+      sprite.setMask(mask);
 
       this.moles.push({
-        container,
+        container: sprite,
         pos,
         isUp: false,
         isHit: false,
         hideTimer: null,
         index: i,
+        mask,
+        maskGraphics,
       });
     });
-  }
-
-  drawMole(g, c) {
-    g.fillStyle(0x000000, 0.1);
-    g.fillEllipse(0, 2, MOLE_BODY_W + 4, MOLE_BODY_H);
-
-    g.fillStyle(hexToInt(c.mole.body));
-    g.fillEllipse(0, -4, MOLE_BODY_W, MOLE_BODY_H);
-
-    g.fillStyle(hexToInt(c.mole.cheeks));
-    g.fillEllipse(0, 6, MOLE_BODY_W - 14, MOLE_BODY_H - 20);
-
-    g.fillStyle(hexToInt(c.mole.body));
-    g.fillCircle(-16, -30, 8);
-    g.fillCircle(16, -30, 8);
-    g.fillStyle(hexToInt(c.mole.nose));
-    g.fillCircle(-16, -30, 4);
-    g.fillCircle(16, -30, 4);
-
-    g.fillStyle(0xffffff);
-    g.fillCircle(-9, -20, 8);
-    g.fillCircle(9, -20, 8);
-    g.fillStyle(0x2a2a3a);
-    g.fillCircle(-8, -19, 5);
-    g.fillCircle(10, -19, 5);
-    g.fillStyle(0xffffff);
-    g.fillCircle(-6, -22, 2.5);
-    g.fillCircle(12, -22, 2.5);
-
-    g.fillStyle(hexToInt(c.mole.nose));
-    g.fillEllipse(0, -10, 10, 7);
-    g.fillStyle(0xffffff, 0.4);
-    g.fillCircle(-1, -12, 2);
-
-    g.lineStyle(2, 0x8B6F4E);
-    g.beginPath();
-    g.arc(0, -6, 5, 0, Math.PI, false);
-    g.strokePath();
-
-    g.fillStyle(hexToInt(c.mole.cheeks), 0.5);
-    g.fillCircle(-16, -12, 6);
-    g.fillCircle(16, -12, 6);
-
-    g.fillStyle(hexToInt(c.mole.body));
-    g.fillEllipse(-10, 20, 12, 8);
-    g.fillEllipse(10, 20, 12, 8);
   }
 
   popUpMole() {
@@ -269,19 +272,24 @@ export class GameScene extends Phaser.Scene {
     const mole = Phaser.Utils.Array.GetRandom(downMoles);
     mole.isUp = true;
     mole.isHit = false;
+
     mole.container.setVisible(true);
     mole.container.y = mole.pos.y + 30;
-    mole.container.setScale(1);
+    mole.container.setScale(MOLE_SCALE);
     mole.container.setAlpha(1);
+    mole.container.setFrame(0); // Normal pose while emerging
 
     playPop();
 
     this.tweens.add({
       targets: mole.container,
       y: mole.pos.y - 22,
-      duration: 250,
+      duration: 350,
       ease: 'Back.easeOut',
       onComplete: () => {
+        // Switch to taunting pose once fully up
+        mole.container.setFrame(1);
+
         this.tweens.add({
           targets: mole.container,
           y: mole.pos.y - 20,
@@ -290,7 +298,7 @@ export class GameScene extends Phaser.Scene {
           ease: 'Sine.easeInOut',
         });
 
-        const stayTime = Phaser.Math.Between(2000, 4000);
+        const stayTime = Phaser.Math.Between(3000, 5500);
         mole.hideTimer = this.time.delayedCall(stayTime, () => {
           if (!mole.isHit && mole.isUp) {
             this.combo = 0;
@@ -304,13 +312,20 @@ export class GameScene extends Phaser.Scene {
 
   hideMole(mole) {
     this.tweens.killTweensOf(mole.container);
+    // Keep dazed frame if hit, otherwise switch to normal
+    if (!mole.isHit) {
+      mole.container.setFrame(0);
+    }
     this.tweens.add({
       targets: mole.container,
       y: mole.pos.y + 30,
+      scaleX: MOLE_SCALE,
+      scaleY: MOLE_SCALE,
       duration: 200,
       ease: 'Quad.easeIn',
       onComplete: () => {
         mole.container.setVisible(false);
+        mole.container.setFrame(0);
         mole.isUp = false;
         mole.isHit = false;
       },
@@ -323,8 +338,9 @@ export class GameScene extends Phaser.Scene {
     const c = this.colors;
 
     // Aiming target on the ground — always visible, follows hammer X
+    // Depth 16 so it renders above hole fronts (15) and mole masks (10)
     this.aimTarget = this.add.container(this.W / 2, this.H * 0.68);
-    this.aimTarget.setDepth(3);
+    this.aimTarget.setDepth(16);
     const aimGfx = this.add.graphics();
     // Soft glowing circle
     aimGfx.fillStyle(0xFFD700, 0.12);
@@ -346,8 +362,9 @@ export class GameScene extends Phaser.Scene {
     });
 
     // Impact shadow (grows when hammer drops)
+    // Depth 17 so it renders above hole fronts and aim target
     this.hammerShadow = this.add.ellipse(this.W / 2, this.H * 0.70, 50, 14, 0x000000, 0.05);
-    this.hammerShadow.setDepth(4);
+    this.hammerShadow.setDepth(17);
 
     // Hammer container — pivot at TOP of handle (grip point)
     // Starts at the top of the screen
@@ -470,12 +487,18 @@ export class GameScene extends Phaser.Scene {
     const c = this.colors;
     this.tweens.killTweensOf(mole.container);
 
+    // Phase 1: WHACK — switch to flat squished frame, quick squash tween
+    mole.container.setFrame(2);
+
     this.tweens.add({
       targets: mole.container,
-      scaleY: 0.25, scaleX: 1.5,
-      y: mole.pos.y + 5,
-      duration: 80,
+      scaleY: MOLE_SCALE * 0.5,
+      scaleX: MOLE_SCALE * 1.3,
+      y: mole.pos.y - 5,
+      duration: 60,
+      ease: 'Quad.easeIn',
       onComplete: () => {
+        // Spawn particle burst
         c.particles.forEach((color) => {
           for (let i = 0; i < 4; i++) {
             const star = this.add.star(
@@ -498,6 +521,7 @@ export class GameScene extends Phaser.Scene {
           }
         });
 
+        // Score popup
         const comboColors = ['#FFD700', '#FF9FF3', '#FF6B6B', '#77DD77', '#87CEEB'];
         const colorIdx = Math.min(this.combo - 1, comboColors.length - 1);
         const label = this.combo > 1 ? `+${points} x${this.combo}` : `+${points}`;
@@ -519,7 +543,21 @@ export class GameScene extends Phaser.Scene {
           onComplete: () => popup.destroy(),
         });
 
-        this.time.delayedCall(150, () => this.hideMole(mole));
+        // Phase 2: DAZED — bounce back to dazed frame with stars
+        this.time.delayedCall(120, () => {
+          mole.container.setFrame(3);
+          this.tweens.add({
+            targets: mole.container,
+            scaleY: MOLE_SCALE,
+            scaleX: MOLE_SCALE,
+            duration: 150,
+            ease: 'Back.easeOut',
+            onComplete: () => {
+              // Phase 3: sink back into hole after a beat
+              this.time.delayedCall(300, () => this.hideMole(mole));
+            },
+          });
+        });
       },
     });
   }
@@ -619,14 +657,16 @@ export class GameScene extends Phaser.Scene {
 
   startMoleTimer() {
     this.moleEvent = this.time.addEvent({
-      delay: 2500,
+      delay: 3200,
       callback: () => {
         this.popUpMole();
         const elapsed = GAME_DURATION - this.timeLeft;
-        if (elapsed > 25 && Math.random() < 0.15) {
-          this.time.delayedCall(300, () => this.popUpMole());
+        // Only spawn a second mole late in the game, and less often
+        if (elapsed > 35 && Math.random() < 0.12) {
+          this.time.delayedCall(500, () => this.popUpMole());
         }
-        const newDelay = Math.max(1200, 2500 - elapsed * 15);
+        // Gentle ramp-up: starts at 3200ms, minimum 2000ms
+        const newDelay = Math.max(2000, 3200 - elapsed * 10);
         this.moleEvent.delay = newDelay;
       },
       loop: true,

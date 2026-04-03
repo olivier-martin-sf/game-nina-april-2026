@@ -1,0 +1,48 @@
+{
+  "meta": {
+    "image": "mole-spritesheet.svg",
+    "size": { "w": 1536, "h": 256 },
+    "frameSize": { "w": 256, "h": 256 },
+    "scale": 1,
+    "description": "Whack-a-mole sprite sheet with 6 animation frames"
+  },
+  "frames": {
+    "mole-hidden": {
+      "frame": { "x": 0, "y": 0, "w": 256, "h": 256 },
+      "sourceSize": { "w": 256, "h": 256 },
+      "duration": 100
+    },
+    "mole-emerging": {
+      "frame": { "x": 256, "y": 0, "w": 256, "h": 256 },
+      "sourceSize": { "w": 256, "h": 256 },
+      "duration": 150
+    },
+    "mole-half-up": {
+      "frame": { "x": 512, "y": 0, "w": 256, "h": 256 },
+      "sourceSize": { "w": 256, "h": 256 },
+      "duration": 150
+    },
+    "mole-full-up": {
+      "frame": { "x": 768, "y": 0, "w": 256, "h": 256 },
+      "sourceSize": { "w": 256, "h": 256 },
+      "duration": 800
+    },
+    "mole-hit": {
+      "frame": { "x": 1024, "y": 0, "w": 256, "h": 256 },
+      "sourceSize": { "w": 256, "h": 256 },
+      "duration": 400
+    },
+    "mole-retreating": {
+      "frame": { "x": 1280, "y": 0, "w": 256, "h": 256 },
+      "sourceSize": { "w": 256, "h": 256 },
+      "duration": 200
+    }
+  },
+  "animations": {
+    "pop-up": ["mole-hidden", "mole-emerging", "mole-half-up", "mole-full-up"],
+    "pop-down": ["mole-full-up", "mole-half-up", "mole-emerging", "mole-hidden"],
+    "whacked": ["mole-hit", "mole-retreating", "mole-hidden"],
+    "taunt": ["mole-full-up"],
+    "idle": ["mole-hidden"]
+  }
+}
