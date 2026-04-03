@@ -24,7 +24,7 @@ const HAMMER_HEAD_W = 70;
 const HAMMER_HEAD_H = 48;
 const HAMMER_HANDLE_W = 14;
 const HAMMER_HANDLE_H = 90;
-const GAME_DURATION = 45;
+const GAME_DURATION = 60;
 
 export class GameScene extends Phaser.Scene {
   constructor() {
@@ -284,7 +284,7 @@ export class GameScene extends Phaser.Scene {
     this.tweens.add({
       targets: mole.container,
       y: mole.pos.y - 22,
-      duration: 250,
+      duration: 350,
       ease: 'Back.easeOut',
       onComplete: () => {
         // Switch to taunting pose once fully up
@@ -298,7 +298,7 @@ export class GameScene extends Phaser.Scene {
           ease: 'Sine.easeInOut',
         });
 
-        const stayTime = Phaser.Math.Between(2000, 4000);
+        const stayTime = Phaser.Math.Between(3000, 5500);
         mole.hideTimer = this.time.delayedCall(stayTime, () => {
           if (!mole.isHit && mole.isUp) {
             this.combo = 0;
@@ -338,8 +338,9 @@ export class GameScene extends Phaser.Scene {
     const c = this.colors;
 
     // Aiming target on the ground — always visible, follows hammer X
+    // Depth 16 so it renders above hole fronts (15) and mole masks (10)
     this.aimTarget = this.add.container(this.W / 2, this.H * 0.68);
-    this.aimTarget.setDepth(3);
+    this.aimTarget.setDepth(16);
     const aimGfx = this.add.graphics();
     // Soft glowing circle
     aimGfx.fillStyle(0xFFD700, 0.12);
@@ -361,8 +362,9 @@ export class GameScene extends Phaser.Scene {
     });
 
     // Impact shadow (grows when hammer drops)
+    // Depth 17 so it renders above hole fronts and aim target
     this.hammerShadow = this.add.ellipse(this.W / 2, this.H * 0.70, 50, 14, 0x000000, 0.05);
-    this.hammerShadow.setDepth(4);
+    this.hammerShadow.setDepth(17);
 
     // Hammer container — pivot at TOP of handle (grip point)
     // Starts at the top of the screen
@@ -655,14 +657,16 @@ export class GameScene extends Phaser.Scene {
 
   startMoleTimer() {
     this.moleEvent = this.time.addEvent({
-      delay: 2500,
+      delay: 3200,
       callback: () => {
         this.popUpMole();
         const elapsed = GAME_DURATION - this.timeLeft;
-        if (elapsed > 25 && Math.random() < 0.15) {
-          this.time.delayedCall(300, () => this.popUpMole());
+        // Only spawn a second mole late in the game, and less often
+        if (elapsed > 35 && Math.random() < 0.12) {
+          this.time.delayedCall(500, () => this.popUpMole());
         }
-        const newDelay = Math.max(1200, 2500 - elapsed * 15);
+        // Gentle ramp-up: starts at 3200ms, minimum 2000ms
+        const newDelay = Math.max(2000, 3200 - elapsed * 10);
         this.moleEvent.delay = newDelay;
       },
       loop: true,
