@@ -52,8 +52,11 @@ export class GameScene extends Phaser.Scene {
       y: Math.round(p.y * H),
     }));
 
-    this.hammerRestY = H * 0.22;
-    this.hammerSmashY = H * 0.65;
+    // Hammer pivot (grip) position — head hangs below this point
+    // When rotated to 0° the head bottom = hammerRestY + HANDLE_H + HEAD_H
+    // Position so the head reaches the mole zone (~H*0.68) when vertical
+    this.hammerRestY = H * 0.68 - HAMMER_HANDLE_H - HAMMER_HEAD_H + 4;
+    this.hammerSmashY = this.hammerRestY; // pivot stays in place, rotation does the work
     this.hammerX = W / 2;
 
     this.drawBackground();
@@ -289,7 +292,7 @@ export class GameScene extends Phaser.Scene {
           ease: 'Sine.easeInOut',
         });
 
-        const stayTime = Phaser.Math.Between(1400, 3200);
+        const stayTime = Phaser.Math.Between(2000, 4000);
         mole.hideTimer = this.time.delayedCall(stayTime, () => {
           if (!mole.isHit && mole.isUp) {
             this.combo = 0;
@@ -320,15 +323,23 @@ export class GameScene extends Phaser.Scene {
 
   createHammer() {
     const c = this.colors;
+
+    // Aiming target on the ground — always visible, follows hammer X
+    this.aimTarget = this.add.graphics();
+    this.aimTarget.setDepth(3);
+    this.drawAimTarget();
+
+    // Small impact shadow (appears when hammer is close to ground)
+    this.hammerShadow = this.add.ellipse(this.W / 2, this.hammerSmashY + 10, 50, 14, 0x000000, 0.15);
+    this.hammerShadow.setDepth(4);
+
+    // Hammer container — pivot at TOP of handle (grip point)
     this.hammerContainer = this.add.container(this.W / 2, this.hammerRestY);
     this.hammerContainer.setDepth(100);
 
     const g = this.add.graphics();
 
-    this.hammerShadow = this.add.ellipse(this.W / 2, this.hammerSmashY + 10, 50, 14, 0x000000, 0.15);
-    this.hammerShadow.setDepth(4);
-
-    // Handle
+    // Handle — drawn downward from origin (grip at 0,0)
     g.fillStyle(hexToInt(c.hammer.handle));
     g.fillRoundedRect(-HAMMER_HANDLE_W / 2, 0, HAMMER_HANDLE_W, HAMMER_HANDLE_H, 5);
     g.lineStyle(1, 0x000000, 0.08);
@@ -336,24 +347,44 @@ export class GameScene extends Phaser.Scene {
       g.lineBetween(-HAMMER_HANDLE_W / 2 + 3, i, HAMMER_HANDLE_W / 2 - 3, i);
     }
 
-    // Head
+    // Head — at BOTTOM of handle (this is what hits the moles)
+    const headY = HAMMER_HANDLE_H - 4;
     g.fillStyle(hexToInt(c.hammer.head));
-    g.fillRoundedRect(-HAMMER_HEAD_W / 2, -HAMMER_HEAD_H + 8, HAMMER_HEAD_W, HAMMER_HEAD_H, 10);
+    g.fillRoundedRect(-HAMMER_HEAD_W / 2, headY, HAMMER_HEAD_W, HAMMER_HEAD_H, 10);
 
-    g.fillStyle(0x000000, 0.15);
-    g.fillRoundedRect(-HAMMER_HEAD_W / 2, -HAMMER_HEAD_H + 8 + HAMMER_HEAD_H - 12, HAMMER_HEAD_W, 12, { tl: 0, tr: 0, bl: 10, br: 10 });
-
+    // Head top highlight
     g.fillStyle(0xffffff, 0.3);
-    g.fillRoundedRect(-HAMMER_HEAD_W / 2 + 4, -HAMMER_HEAD_H + 12, HAMMER_HEAD_W - 8, 14, 6);
+    g.fillRoundedRect(-HAMMER_HEAD_W / 2 + 4, headY + 4, HAMMER_HEAD_W - 8, 14, 6);
 
+    // Head bottom darker edge
+    g.fillStyle(0x000000, 0.15);
+    g.fillRoundedRect(-HAMMER_HEAD_W / 2, headY + HAMMER_HEAD_H - 12, HAMMER_HEAD_W, 12, { tl: 0, tr: 0, bl: 10, br: 10 });
+
+    // Head side bands
     g.fillStyle(0x000000, 0.08);
-    g.fillRect(-HAMMER_HEAD_W / 2 + 6, -HAMMER_HEAD_H + 10, 4, HAMMER_HEAD_H - 6);
-    g.fillRect(HAMMER_HEAD_W / 2 - 10, -HAMMER_HEAD_H + 10, 4, HAMMER_HEAD_H - 6);
+    g.fillRect(-HAMMER_HEAD_W / 2 + 6, headY + 4, 4, HAMMER_HEAD_H - 8);
+    g.fillRect(HAMMER_HEAD_W / 2 - 10, headY + 4, 4, HAMMER_HEAD_H - 8);
 
     this.hammerContainer.add(g);
 
-    // Rest pose: tilted back so head points up-right
-    this.hammerContainer.setAngle(-45);
+    // Rest pose: tilted back (head swings up and to the right)
+    this.hammerContainer.setAngle(-60);
+  }
+
+  drawAimTarget() {
+    const g = this.aimTarget;
+    g.clear();
+
+    // Crosshair / target circle on the ground
+    g.lineStyle(2.5, 0x000000, 0.2);
+    g.strokeCircle(0, 0, 22);
+    g.lineStyle(2, 0x000000, 0.15);
+    g.lineBetween(-12, 0, 12, 0);
+    g.lineBetween(0, -12, 0, 12);
+
+    // Outer glow ring
+    g.lineStyle(1, 0x000000, 0.08);
+    g.strokeCircle(0, 0, 30);
   }
 
   smashHammer() {
@@ -362,13 +393,11 @@ export class GameScene extends Phaser.Scene {
 
     playWhoosh();
 
-    // Swing down: rotate forward so head arcs into moles
+    // Swing forward: pivot at grip, head arcs DOWN onto the moles
     this.tweens.add({
       targets: this.hammerContainer,
-      y: this.hammerSmashY,
-      angle: 10,
-      scaleX: 1.1, scaleY: 0.95,
-      duration: 100,
+      angle: 0,
+      duration: 150,
       ease: 'Quad.easeIn',
       onComplete: () => {
         const didHit = this.checkHits();
@@ -381,16 +410,24 @@ export class GameScene extends Phaser.Scene {
           this.updateComboText();
         }
 
-        // Swing back up to rest tilt
+        // Small forward overshoot then swing back
         this.tweens.add({
           targets: this.hammerContainer,
-          y: this.hammerRestY,
-          angle: -45,
-          scaleX: 1, scaleY: 1,
-          duration: 400,
-          ease: 'Back.easeOut',
+          angle: 5,
+          duration: 60,
+          yoyo: true,
+          ease: 'Sine.easeOut',
           onComplete: () => {
-            this.isSmashing = false;
+            // Swing back to rest tilt
+            this.tweens.add({
+              targets: this.hammerContainer,
+              angle: -60,
+              duration: 450,
+              ease: 'Back.easeOut',
+              onComplete: () => {
+                this.isSmashing = false;
+              },
+            });
           },
         });
       },
@@ -485,7 +522,7 @@ export class GameScene extends Phaser.Scene {
 
   showMissEffect() {
     const x = this.hammerContainer.x;
-    const y = this.hammerSmashY + 5;
+    const y = this.H * 0.70;
     const c = this.colors;
 
     for (let i = 0; i < 6; i++) {
@@ -578,14 +615,14 @@ export class GameScene extends Phaser.Scene {
 
   startMoleTimer() {
     this.moleEvent = this.time.addEvent({
-      delay: 1800,
+      delay: 2500,
       callback: () => {
         this.popUpMole();
         const elapsed = GAME_DURATION - this.timeLeft;
-        if (elapsed > 20 && Math.random() < 0.2) {
-          this.time.delayedCall(150, () => this.popUpMole());
+        if (elapsed > 25 && Math.random() < 0.15) {
+          this.time.delayedCall(300, () => this.popUpMole());
         }
-        const newDelay = Math.max(800, 1800 - elapsed * 18);
+        const newDelay = Math.max(1200, 2500 - elapsed * 15);
         this.moleEvent.delay = newDelay;
       },
       loop: true,
@@ -717,12 +754,22 @@ export class GameScene extends Phaser.Scene {
         0.18,
       );
     }
+
+    // Aim target follows hammer X on the ground (always visible)
+    if (this.aimTarget) {
+      this.aimTarget.x = this.hammerContainer.x;
+      this.aimTarget.y = this.H * 0.70;
+    }
+
+    // Impact shadow — grows when hammer swings down (angle closer to 0)
     if (this.hammerShadow) {
       this.hammerShadow.x = this.hammerContainer.x;
-      const progress = (this.hammerContainer.y - this.hammerRestY) / (this.hammerSmashY - this.hammerRestY);
-      const p = Phaser.Math.Clamp(progress, 0, 1);
-      this.hammerShadow.setAlpha(0.05 + 0.15 * p);
-      this.hammerShadow.setScale(0.6 + 0.4 * p);
+      this.hammerShadow.y = this.H * 0.70;
+      // Map angle from -60 (rest) to 0 (impact) → progress 0 to 1
+      const angle = this.hammerContainer.angle;
+      const p = Phaser.Math.Clamp((angle + 60) / 60, 0, 1);
+      this.hammerShadow.setAlpha(0.05 + 0.2 * p);
+      this.hammerShadow.setScale(0.5 + 0.6 * p);
     }
   }
 }
