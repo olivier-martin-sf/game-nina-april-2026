@@ -21,13 +21,13 @@ var StickerSystem = (function() {
 
   var state;
 
-  // Load from localStorage
+  // Load from server file first, fall back to localStorage
   function load() {
+    // Start with localStorage synchronously so UI works immediately
     try {
       var saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         state = JSON.parse(saved);
-        // Ensure all fields exist
         state.stickers = state.stickers || [];
         state.totalCorrect = state.totalCorrect || 0;
         state.correctSinceLastSticker = state.correctSinceLastSticker || 0;
@@ -39,6 +39,29 @@ var StickerSystem = (function() {
     } catch(e) {
       state = createFreshState();
     }
+    // Then try to load from server file (overwrites localStorage data if found)
+    loadFromServer();
+  }
+
+  function loadFromServer() {
+    try {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', '/api/stickers', true);
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          try {
+            var serverData = JSON.parse(xhr.responseText);
+            if (serverData && serverData.stickers) {
+              state = serverData;
+              state.stickerThreshold = state.stickerThreshold || DEFAULT_THRESHOLD;
+              localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+              updateBackpackUI();
+            }
+          } catch(e) { /* ignore parse errors */ }
+        }
+      };
+      xhr.send();
+    } catch(e) { /* server not available, use localStorage */ }
   }
 
   function createFreshState() {
@@ -51,13 +74,23 @@ var StickerSystem = (function() {
     };
   }
 
-  // Save to localStorage
+  // Save to localStorage and server file
   function save() {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     } catch(e) {
       // localStorage unavailable (private browsing, etc.)
     }
+    saveToServer();
+  }
+
+  function saveToServer() {
+    try {
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/api/stickers', true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.send(JSON.stringify(state));
+    } catch(e) { /* server not available, localStorage is still saved */ }
   }
 
   // Register a correct answer. Returns the new sticker emoji if one was earned, otherwise null.
