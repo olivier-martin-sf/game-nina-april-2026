@@ -194,19 +194,17 @@ export class GameScene extends Phaser.Scene {
   // ─── MOLES ──────────────────────────────────────────────
 
   createMoles() {
-    const c = this.colors;
+    // Sprite scale so the 128px frame fits the mole body size
+    const moleScale = MOLE_BODY_H / 100;
 
     this.holePositions.forEach((pos, i) => {
-      const container = this.add.container(pos.x, pos.y + 30);
-      container.setDepth(10);
-
-      const body = this.add.graphics();
-      this.drawMole(body, c);
-      container.add(body);
-      container.setVisible(false);
+      const sprite = this.add.sprite(pos.x, pos.y + 30, 'mole', 0);
+      sprite.setDepth(10);
+      sprite.setScale(moleScale);
+      sprite.setVisible(false);
 
       this.moles.push({
-        container,
+        container: sprite,
         pos,
         isUp: false,
         isHit: false,
@@ -216,52 +214,6 @@ export class GameScene extends Phaser.Scene {
     });
   }
 
-  drawMole(g, c) {
-    g.fillStyle(0x000000, 0.1);
-    g.fillEllipse(0, 2, MOLE_BODY_W + 4, MOLE_BODY_H);
-
-    g.fillStyle(hexToInt(c.mole.body));
-    g.fillEllipse(0, -4, MOLE_BODY_W, MOLE_BODY_H);
-
-    g.fillStyle(hexToInt(c.mole.cheeks));
-    g.fillEllipse(0, 6, MOLE_BODY_W - 14, MOLE_BODY_H - 20);
-
-    g.fillStyle(hexToInt(c.mole.body));
-    g.fillCircle(-16, -30, 8);
-    g.fillCircle(16, -30, 8);
-    g.fillStyle(hexToInt(c.mole.nose));
-    g.fillCircle(-16, -30, 4);
-    g.fillCircle(16, -30, 4);
-
-    g.fillStyle(0xffffff);
-    g.fillCircle(-9, -20, 8);
-    g.fillCircle(9, -20, 8);
-    g.fillStyle(0x2a2a3a);
-    g.fillCircle(-8, -19, 5);
-    g.fillCircle(10, -19, 5);
-    g.fillStyle(0xffffff);
-    g.fillCircle(-6, -22, 2.5);
-    g.fillCircle(12, -22, 2.5);
-
-    g.fillStyle(hexToInt(c.mole.nose));
-    g.fillEllipse(0, -10, 10, 7);
-    g.fillStyle(0xffffff, 0.4);
-    g.fillCircle(-1, -12, 2);
-
-    g.lineStyle(2, 0x8B6F4E);
-    g.beginPath();
-    g.arc(0, -6, 5, 0, Math.PI, false);
-    g.strokePath();
-
-    g.fillStyle(hexToInt(c.mole.cheeks), 0.5);
-    g.fillCircle(-16, -12, 6);
-    g.fillCircle(16, -12, 6);
-
-    g.fillStyle(hexToInt(c.mole.body));
-    g.fillEllipse(-10, 20, 12, 8);
-    g.fillEllipse(10, 20, 12, 8);
-  }
-
   popUpMole() {
     const downMoles = this.moles.filter((m) => !m.isUp && !m.isHit);
     if (downMoles.length === 0) return;
@@ -269,10 +221,13 @@ export class GameScene extends Phaser.Scene {
     const mole = Phaser.Utils.Array.GetRandom(downMoles);
     mole.isUp = true;
     mole.isHit = false;
+
+    const moleScale = MOLE_BODY_H / 100;
     mole.container.setVisible(true);
     mole.container.y = mole.pos.y + 30;
-    mole.container.setScale(1);
+    mole.container.setScale(moleScale);
     mole.container.setAlpha(1);
+    mole.container.setFrame(0); // Normal pose while emerging
 
     playPop();
 
@@ -282,6 +237,9 @@ export class GameScene extends Phaser.Scene {
       duration: 250,
       ease: 'Back.easeOut',
       onComplete: () => {
+        // Switch to taunting pose once fully up
+        mole.container.setFrame(1);
+
         this.tweens.add({
           targets: mole.container,
           y: mole.pos.y - 20,
@@ -304,6 +262,10 @@ export class GameScene extends Phaser.Scene {
 
   hideMole(mole) {
     this.tweens.killTweensOf(mole.container);
+    // Switch to normal frame when retreating (or keep hit frame if dazed)
+    if (!mole.isHit) {
+      mole.container.setFrame(0);
+    }
     this.tweens.add({
       targets: mole.container,
       y: mole.pos.y + 30,
@@ -311,6 +273,7 @@ export class GameScene extends Phaser.Scene {
       ease: 'Quad.easeIn',
       onComplete: () => {
         mole.container.setVisible(false);
+        mole.container.setFrame(0);
         mole.isUp = false;
         mole.isHit = false;
       },
@@ -470,9 +433,13 @@ export class GameScene extends Phaser.Scene {
     const c = this.colors;
     this.tweens.killTweensOf(mole.container);
 
+    // Switch to hit/dazed frame
+    mole.container.setFrame(2);
+
+    const moleScale = MOLE_BODY_H / 100;
     this.tweens.add({
       targets: mole.container,
-      scaleY: 0.25, scaleX: 1.5,
+      scaleY: moleScale * 0.5, scaleX: moleScale * 1.4,
       y: mole.pos.y + 5,
       duration: 80,
       onComplete: () => {

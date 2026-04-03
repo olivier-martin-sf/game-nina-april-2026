@@ -1,0 +1,211 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 128" width="384" height="128">
+  <!-- Mole Character Sprite Sheet: 3 frames, each 128x128, transparent background -->
+  <!-- Frame 0: Normal/happy (idle pose) -->
+  <!-- Frame 1: Taunting (arms raised, matching reference) -->
+  <!-- Frame 2: Hit/dazed (bonked) -->
+
+  <defs>
+    <radialGradient id="furGrad" cx="45%" cy="35%" r="55%">
+      <stop offset="0%" stop-color="#d4a055"/>
+      <stop offset="60%" stop-color="#b8863c"/>
+      <stop offset="100%" stop-color="#8b6424"/>
+    </radialGradient>
+    <radialGradient id="bellyGrad" cx="50%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="80%" stop-color="#f0ece4"/>
+      <stop offset="100%" stop-color="#e0d8cc"/>
+    </radialGradient>
+    <radialGradient id="cheekGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="70%" stop-color="#f5f0e8"/>
+      <stop offset="100%" stop-color="#e8e0d4"/>
+    </radialGradient>
+    <radialGradient id="noseGrad" cx="40%" cy="35%" r="50%">
+      <stop offset="0%" stop-color="#555555"/>
+      <stop offset="100%" stop-color="#222222"/>
+    </radialGradient>
+  </defs>
+
+  <!-- ==================== FRAME 0: NORMAL/HAPPY ==================== -->
+  <g transform="translate(0,0)">
+    <!-- Shadow -->
+    <ellipse cx="64" cy="120" rx="30" ry="6" fill="#000" opacity="0.12"/>
+
+    <!-- Body -->
+    <ellipse cx="64" cy="90" rx="26" ry="22" fill="url(#furGrad)"/>
+    <!-- Belly -->
+    <ellipse cx="64" cy="89" rx="19" ry="17" fill="url(#bellyGrad)"/>
+
+    <!-- Head -->
+    <ellipse cx="64" cy="58" rx="28" ry="26" fill="url(#furGrad)"/>
+
+    <!-- Ears -->
+    <ellipse cx="42" cy="40" rx="6" ry="5" fill="#b8863c"/>
+    <ellipse cx="42" cy="40" rx="4" ry="3" fill="#d4a055"/>
+    <ellipse cx="86" cy="40" rx="6" ry="5" fill="#b8863c"/>
+    <ellipse cx="86" cy="40" rx="4" ry="3" fill="#d4a055"/>
+
+    <!-- Cheeks -->
+    <ellipse cx="50" cy="64" rx="14" ry="10" fill="url(#cheekGrad)"/>
+    <ellipse cx="78" cy="64" rx="14" ry="10" fill="url(#cheekGrad)"/>
+
+    <!-- Nose -->
+    <ellipse cx="64" cy="58" rx="6" ry="5" fill="url(#noseGrad)"/>
+    <ellipse cx="62" cy="56" rx="2" ry="1.5" fill="#666" opacity="0.5"/>
+
+    <!-- Eyes (happy squint) -->
+    <path d="M51,52 Q56,48 61,52" stroke="#222" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M67,52 Q72,48 77,52" stroke="#222" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+    <!-- Eyebrows -->
+    <path d="M50,47 Q56,44 62,47" stroke="#8b6424" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <path d="M66,47 Q72,44 78,47" stroke="#8b6424" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+
+    <!-- Whiskers -->
+    <line x1="36" y1="60" x2="22" y2="56" stroke="#444" stroke-width="0.8" opacity="0.6"/>
+    <line x1="36" y1="64" x2="20" y2="64" stroke="#444" stroke-width="0.8" opacity="0.6"/>
+    <line x1="36" y1="68" x2="22" y2="72" stroke="#444" stroke-width="0.8" opacity="0.6"/>
+    <line x1="92" y1="60" x2="106" y2="56" stroke="#444" stroke-width="0.8" opacity="0.6"/>
+    <line x1="92" y1="64" x2="108" y2="64" stroke="#444" stroke-width="0.8" opacity="0.6"/>
+    <line x1="92" y1="68" x2="106" y2="72" stroke="#444" stroke-width="0.8" opacity="0.6"/>
+
+    <!-- Teeth -->
+    <rect x="60" y="70" width="4" height="5" rx="1" fill="white" stroke="#ddd" stroke-width="0.4"/>
+    <rect x="64.5" y="70" width="4" height="5" rx="1" fill="white" stroke="#ddd" stroke-width="0.4"/>
+
+    <!-- Paws at sides -->
+    <ellipse cx="40" cy="100" rx="9" ry="6" fill="#c49a44"/>
+    <ellipse cx="88" cy="100" rx="9" ry="6" fill="#c49a44"/>
+  </g>
+
+  <!-- ==================== FRAME 1: TAUNTING (arms raised) ==================== -->
+  <g transform="translate(128,0)">
+    <!-- Shadow -->
+    <ellipse cx="64" cy="120" rx="30" ry="6" fill="#000" opacity="0.12"/>
+
+    <!-- Body -->
+    <ellipse cx="64" cy="90" rx="26" ry="22" fill="url(#furGrad)"/>
+    <!-- Belly -->
+    <ellipse cx="64" cy="89" rx="19" ry="17" fill="url(#bellyGrad)"/>
+
+    <!-- Head -->
+    <ellipse cx="64" cy="58" rx="28" ry="26" fill="url(#furGrad)"/>
+
+    <!-- Ears -->
+    <ellipse cx="42" cy="40" rx="6" ry="5" fill="#b8863c"/>
+    <ellipse cx="42" cy="40" rx="4" ry="3" fill="#d4a055"/>
+    <ellipse cx="86" cy="40" rx="6" ry="5" fill="#b8863c"/>
+    <ellipse cx="86" cy="40" rx="4" ry="3" fill="#d4a055"/>
+
+    <!-- Left arm raised -->
+    <ellipse cx="30" cy="70" rx="12" ry="8" fill="#b8863c" transform="rotate(-25,30,70)"/>
+    <circle cx="22" cy="60" r="7" fill="#c49a44"/>
+    <!-- Claws -->
+    <path d="M15,54 L12,48 L14,53" fill="#555" stroke="#444" stroke-width="0.6"/>
+    <path d="M18,52 L17,45 L20,51" fill="#555" stroke="#444" stroke-width="0.6"/>
+    <path d="M22,51 L22,44 L24,50" fill="#555" stroke="#444" stroke-width="0.6"/>
+
+    <!-- Right arm raised -->
+    <ellipse cx="98" cy="70" rx="12" ry="8" fill="#b8863c" transform="rotate(25,98,70)"/>
+    <circle cx="106" cy="60" r="7" fill="#c49a44"/>
+    <!-- Claws -->
+    <path d="M113,54 L116,48 L114,53" fill="#555" stroke="#444" stroke-width="0.6"/>
+    <path d="M110,52 L111,45 L108,51" fill="#555" stroke="#444" stroke-width="0.6"/>
+    <path d="M106,51 L106,44 L104,50" fill="#555" stroke="#444" stroke-width="0.6"/>
+
+    <!-- Cheeks -->
+    <ellipse cx="50" cy="64" rx="14" ry="10" fill="url(#cheekGrad)"/>
+    <ellipse cx="78" cy="64" rx="14" ry="10" fill="url(#cheekGrad)"/>
+
+    <!-- Nose -->
+    <ellipse cx="64" cy="58" rx="6" ry="5" fill="url(#noseGrad)"/>
+    <ellipse cx="62" cy="56" rx="2" ry="1.5" fill="#666" opacity="0.5"/>
+
+    <!-- Eyes (happy squint) -->
+    <path d="M51,52 Q56,48 61,52" stroke="#222" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M67,52 Q72,48 77,52" stroke="#222" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+    <!-- Eyebrows (raised, cheeky) -->
+    <path d="M49,45 Q56,41 63,45" stroke="#8b6424" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <path d="M65,45 Q72,41 79,45" stroke="#8b6424" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+
+    <!-- Whiskers -->
+    <line x1="36" y1="60" x2="22" y2="56" stroke="#444" stroke-width="0.8" opacity="0.6"/>
+    <line x1="36" y1="64" x2="20" y2="64" stroke="#444" stroke-width="0.8" opacity="0.6"/>
+    <line x1="36" y1="68" x2="22" y2="72" stroke="#444" stroke-width="0.8" opacity="0.6"/>
+    <line x1="92" y1="60" x2="106" y2="56" stroke="#444" stroke-width="0.8" opacity="0.6"/>
+    <line x1="92" y1="64" x2="108" y2="64" stroke="#444" stroke-width="0.8" opacity="0.6"/>
+    <line x1="92" y1="68" x2="106" y2="72" stroke="#444" stroke-width="0.8" opacity="0.6"/>
+
+    <!-- Teeth -->
+    <rect x="60" y="70" width="4" height="5" rx="1" fill="white" stroke="#ddd" stroke-width="0.4"/>
+    <rect x="64.5" y="70" width="4" height="5" rx="1" fill="white" stroke="#ddd" stroke-width="0.4"/>
+
+    <!-- Paws/feet at bottom -->
+    <ellipse cx="50" cy="106" rx="8" ry="5" fill="#c49a44"/>
+    <ellipse cx="78" cy="106" rx="8" ry="5" fill="#c49a44"/>
+  </g>
+
+  <!-- ==================== FRAME 2: HIT/DAZED ==================== -->
+  <g transform="translate(256,0)">
+    <!-- Shadow -->
+    <ellipse cx="64" cy="120" rx="32" ry="5" fill="#000" opacity="0.12"/>
+
+    <!-- Body (slightly squished) -->
+    <ellipse cx="64" cy="94" rx="28" ry="18" fill="url(#furGrad)"/>
+    <!-- Belly -->
+    <ellipse cx="64" cy="93" rx="20" ry="14" fill="url(#bellyGrad)"/>
+
+    <!-- Head (slightly lower, squished) -->
+    <ellipse cx="64" cy="64" rx="29" ry="24" fill="url(#furGrad)"/>
+
+    <!-- Ears (droopy) -->
+    <ellipse cx="40" cy="48" rx="6" ry="5" fill="#b8863c" transform="rotate(-15,40,48)"/>
+    <ellipse cx="40" cy="48" rx="4" ry="3" fill="#d4a055" transform="rotate(-15,40,48)"/>
+    <ellipse cx="88" cy="48" rx="6" ry="5" fill="#b8863c" transform="rotate(15,88,48)"/>
+    <ellipse cx="88" cy="48" rx="4" ry="3" fill="#d4a055" transform="rotate(15,88,48)"/>
+
+    <!-- Arms drooping -->
+    <ellipse cx="34" cy="86" rx="11" ry="7" fill="#b8863c" transform="rotate(15,34,86)"/>
+    <circle cx="27" cy="92" r="6" fill="#c49a44"/>
+    <ellipse cx="94" cy="86" rx="11" ry="7" fill="#b8863c" transform="rotate(-15,94,86)"/>
+    <circle cx="101" cy="92" r="6" fill="#c49a44"/>
+
+    <!-- Cheeks -->
+    <ellipse cx="49" cy="70" rx="14" ry="10" fill="url(#cheekGrad)"/>
+    <ellipse cx="79" cy="70" rx="14" ry="10" fill="url(#cheekGrad)"/>
+
+    <!-- Nose -->
+    <ellipse cx="64" cy="64" rx="6" ry="5" fill="url(#noseGrad)"/>
+    <ellipse cx="62" cy="62" rx="2" ry="1.5" fill="#666" opacity="0.5"/>
+
+    <!-- X Eyes (dazed) -->
+    <g stroke="#222" stroke-width="2" stroke-linecap="round">
+      <line x1="50" y1="54" x2="58" y2="62"/>
+      <line x1="58" y1="54" x2="50" y2="62"/>
+      <line x1="70" y1="54" x2="78" y2="62"/>
+      <line x1="78" y1="54" x2="70" y2="62"/>
+    </g>
+
+    <!-- Droopy whiskers -->
+    <line x1="35" y1="66" x2="20" y2="65" stroke="#444" stroke-width="0.8" opacity="0.6"/>
+    <line x1="35" y1="70" x2="18" y2="73" stroke="#444" stroke-width="0.8" opacity="0.6"/>
+    <line x1="35" y1="74" x2="20" y2="80" stroke="#444" stroke-width="0.8" opacity="0.6"/>
+    <line x1="93" y1="66" x2="108" y2="65" stroke="#444" stroke-width="0.8" opacity="0.6"/>
+    <line x1="93" y1="70" x2="110" y2="73" stroke="#444" stroke-width="0.8" opacity="0.6"/>
+    <line x1="93" y1="74" x2="108" y2="80" stroke="#444" stroke-width="0.8" opacity="0.6"/>
+
+    <!-- Wavy dazed mouth -->
+    <path d="M56,76 Q60,80 64,76 Q68,72 72,76" stroke="#666" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+
+    <!-- Stars circling -->
+    <polygon points="44,30 45.5,26 49,26 46.2,28.5 47.2,32 44,29.8 40.8,32 41.8,28.5 39,26 42.5,26" fill="#ffeb3b"/>
+    <polygon points="64,24 65.2,21 68,21 65.8,23 66.6,26 64,24.2 61.4,26 62.2,23 60,21 62.8,21" fill="#ffeb3b" opacity="0.9"/>
+    <polygon points="84,30 85.5,26 89,26 86.2,28.5 87.2,32 84,29.8 80.8,32 81.8,28.5 79,26 82.5,26" fill="#ffeb3b"/>
+
+    <!-- Impact lines -->
+    <line x1="64" y1="16" x2="64" y2="10" stroke="#ff5722" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+    <line x1="50" y1="20" x2="45" y2="14" stroke="#ff5722" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+    <line x1="78" y1="20" x2="83" y2="14" stroke="#ff5722" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+  </g>
+</svg>

@@ -9,6 +9,10 @@ export class BootScene extends Phaser.Scene {
 
   preload() {
     this.load.audio('bgMusic', 'assets/music/home-page-bg-music.m4a');
+    this.load.spritesheet('mole', 'assets/sprites/mole-character.svg', {
+      frameWidth: 128,
+      frameHeight: 128,
+    });
   }
 
   create() {
@@ -60,36 +64,8 @@ export class BootScene extends Phaser.Scene {
       ease: 'Sine.easeInOut',
     });
 
-    // Draw a cute mole in the center
-    const mole = this.add.graphics();
-    mole.x = cx;
-    mole.y = H * 0.55;
-
-    mole.fillStyle(hexToInt(c.mole.body));
-    mole.fillEllipse(0, 0, 70, 80);
-    mole.fillStyle(hexToInt(c.mole.cheeks));
-    mole.fillEllipse(0, 10, 50, 50);
-    mole.fillStyle(hexToInt(c.mole.body));
-    mole.fillCircle(-24, -36, 12);
-    mole.fillCircle(24, -36, 12);
-    mole.fillStyle(hexToInt(c.mole.nose));
-    mole.fillCircle(-24, -36, 6);
-    mole.fillCircle(24, -36, 6);
-    mole.fillStyle(0xffffff);
-    mole.fillCircle(-12, -18, 11);
-    mole.fillCircle(12, -18, 11);
-    mole.fillStyle(0x2a2a3a);
-    mole.fillCircle(-10, -16, 7);
-    mole.fillCircle(14, -16, 7);
-    mole.fillStyle(0xffffff);
-    mole.fillCircle(-8, -20, 3);
-    mole.fillCircle(16, -20, 3);
-    mole.fillStyle(hexToInt(c.mole.nose));
-    mole.fillEllipse(0, -6, 14, 10);
-    mole.lineStyle(2, 0x8B6F4E);
-    mole.beginPath();
-    mole.arc(0, 0, 7, 0, Math.PI, false);
-    mole.strokePath();
+    // Cute mole sprite in the center (taunting frame)
+    const mole = this.add.sprite(cx, H * 0.55, 'mole', 1).setScale(1.2);
 
     this.tweens.add({
       targets: mole,
