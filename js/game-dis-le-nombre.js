@@ -1,7 +1,7 @@
-// game-dis-le-nombre.js — Game 1: See a number (70-100), say it in French
+// game-dis-le-nombre.js — Game 1: See a number (60-100), say it in French
 
 var Game1 = (function() {
-  var numbers = getNumbersInRange(70, 100);
+  var numbers = getNumbersInRange(60, 100);
   var currentNumber = null;
   var score = 0;
   var isListening = false;
