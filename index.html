@@ -57,6 +57,12 @@
           <p>Compte à rebours pour lancer la fusée</p>
           <span class="game-card-range">Compte en descendant</span>
         </div>
+        <div class="game-card game-card-orange" onclick="showScreen('game4')">
+          <div class="game-card-emoji">🧮</div>
+          <h2>Les Doubles !</h2>
+          <p>Calcule le double des nombres</p>
+          <span class="game-card-range">1 → 20</span>
+        </div>
       </div>
     </div>
   </div>
@@ -192,6 +198,36 @@
     </div>
   </div>
 
+  <!-- ==================== GAME 4: LES DOUBLES ==================== -->
+  <div id="screen-game4" class="screen">
+    <div class="game-topbar">
+      <button class="btn btn-small btn-back" onclick="showScreen('menu')">← Retour</button>
+      <div class="game-score">Score : <span id="game4-score">0</span></div>
+    </div>
+    <div class="game-container">
+      <h2 class="game-title">🧮 Les Doubles !</h2>
+      <p class="game-instruction">Calcule le double du nombre</p>
+
+      <div class="equation">
+        <span id="game4-num" class="equation-number">5</span>
+        <span class="equation-op">+</span>
+        <span id="game4-num2" class="equation-number">5</span>
+        <span class="equation-op">=</span>
+        <input id="game4-answer" class="answer-input" type="number" min="0" max="40" placeholder="?">
+      </div>
+
+      <button class="btn btn-big btn-blue" onclick="game4Submit()" id="game4-validate">
+        Valider ✅
+      </button>
+
+      <div id="game4-feedback" class="feedback"></div>
+
+      <button id="game4-next" class="btn btn-big btn-green hidden" onclick="game4Next()">
+        Suivant →
+      </button>
+    </div>
+  </div>
+
   <!-- ==================== BACKPACK SCREEN ==================== -->
   <div id="screen-backpack" class="screen">
     <div class="game-topbar">
@@ -229,6 +265,7 @@
   <script src="js/game-dis-le-nombre.js"></script>
   <script src="js/game-ecoute.js"></script>
   <script src="js/game-descente.js"></script>
+  <script src="js/game-doubles.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

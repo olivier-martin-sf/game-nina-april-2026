@@ -21,6 +21,8 @@ function showScreen(screenId) {
     Game2.init();
   } else if (screenId === 'game3') {
     Game3.init();
+  } else if (screenId === 'game4') {
+    Game4.init();
   } else if (screenId === 'backpack') {
     StickerSystem.updateBackpackUI();
   } else if (screenId === 'menu') {
