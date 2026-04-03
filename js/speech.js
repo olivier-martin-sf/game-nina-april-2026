@@ -82,15 +82,45 @@ const SpeechManager = (function() {
     return speak(String(num));
   }
 
-  // Speak encouragement
+  // Speak encouragement - personalized for Nina
   function speakBravo() {
-    var phrases = ['Bravo !', 'Super !', 'Génial !', 'Très bien !', 'Excellent !'];
+    var phrases = [
+      'Bravo Nina, tu te débrouilles très bien !',
+      'Super Nina, tu es une vraie championne !',
+      'Génial Nina, je suis très fier de toi !',
+      'Excellent Nina, tu as tout compris !',
+      'Très bien Nina, continue comme ça !',
+      'Magnifique Nina, quel beau travail !',
+      'Incroyable Nina, tu es trop forte !',
+      'Fantastique Nina, tu progresses à toute vitesse !',
+      'Waouh Nina, quelle bonne réponse !',
+      'Parfait Nina, tu es vraiment douée !',
+      'Nina, tu me surprends à chaque fois !',
+      'Chapeau Nina, tu gères trop bien !',
+      'Nina, tu es une star des chiffres !',
+      'Quel talent Nina, bravo à toi !',
+      'Nina, tu as un cerveau de génie !',
+      'Super boulot Nina, je suis impressionné !',
+      'Nina, tu es la meilleure !',
+      'Extraordinaire Nina, rien ne t\'arrête !',
+      'Trop bien Nina, tu assures grave !',
+      'Nina, tu déchires tout, bravo !'
+    ];
     var phrase = phrases[Math.floor(Math.random() * phrases.length)];
     return speak(phrase);
   }
 
   function speakEncourage() {
-    var phrases = ['Essaie encore !', 'Presque !', 'Tu peux le faire !', 'Allez, encore un essai !'];
+    var phrases = [
+      'Essaie encore Nina, tu vas y arriver !',
+      'Presque Nina, tu es tout près !',
+      'Tu peux le faire Nina, je crois en toi !',
+      'Allez Nina, encore un petit essai !',
+      'Courage Nina, la prochaine sera la bonne !',
+      'Pas grave Nina, on apprend en se trompant !',
+      'Continue Nina, tu es sur la bonne voie !',
+      'Nina, réfléchis bien, tu vas trouver !'
+    ];
     var phrase = phrases[Math.floor(Math.random() * phrases.length)];
     return speak(phrase);
   }
