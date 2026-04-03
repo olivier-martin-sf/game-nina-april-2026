@@ -3,7 +3,7 @@ var http = require('http');
 var fs = require('fs');
 var path = require('path');
 
-var PORT = 3000;
+var PORT = process.env.PORT || 3456;
 var SAVE_FILE = path.join(__dirname, 'stickers-save.txt');
 
 var MIME_TYPES = {
