@@ -2,16 +2,18 @@ import Phaser from 'phaser';
 import { getCurrentPalette, hexToInt } from '../utils/colors.js';
 import { resumeAudio, playBonk, playWhoosh, playPop, playMiss, playCombo, playGameOver } from '../utils/sounds.js';
 
-// Hole positions as fractions of screen (x%, y%)
+// Hole positions as fractions within the play area (x%) and screen (y%)
 const HOLE_POSITIONS_PCT = [
-  { x: 0.19, y: 0.68 },
-  { x: 0.41, y: 0.65 },
-  { x: 0.64, y: 0.65 },
-  { x: 0.86, y: 0.68 },
-  { x: 0.30, y: 0.78 },
-  { x: 0.53, y: 0.77 },
-  { x: 0.75, y: 0.78 },
+  { x: 0.10, y: 0.65 },
+  { x: 0.37, y: 0.62 },
+  { x: 0.63, y: 0.62 },
+  { x: 0.90, y: 0.65 },
+  { x: 0.22, y: 0.76 },
+  { x: 0.50, y: 0.75 },
+  { x: 0.78, y: 0.76 },
 ];
+
+const MAX_PLAY_WIDTH = 700;
 
 const HOLE_WIDTH = 74;
 const HOLE_HEIGHT = 30;
@@ -21,7 +23,7 @@ const HAMMER_HEAD_W = 70;
 const HAMMER_HEAD_H = 48;
 const HAMMER_HANDLE_W = 14;
 const HAMMER_HANDLE_H = 90;
-const GAME_DURATION = 30;
+const GAME_DURATION = 45;
 
 export class GameScene extends Phaser.Scene {
   constructor() {
@@ -41,13 +43,16 @@ export class GameScene extends Phaser.Scene {
     this.W = W;
     this.H = H;
 
-    // Convert percentage positions to actual positions
+    // Cap play area width so holes stay reachable on wide screens
+    this.playWidth = Math.min(W, MAX_PLAY_WIDTH);
+    this.playLeft = (W - this.playWidth) / 2;
+
     this.holePositions = HOLE_POSITIONS_PCT.map(p => ({
-      x: Math.round(p.x * W),
+      x: Math.round(this.playLeft + p.x * this.playWidth),
       y: Math.round(p.y * H),
     }));
 
-    this.hammerRestY = H * 0.30;
+    this.hammerRestY = H * 0.22;
     this.hammerSmashY = H * 0.65;
     this.hammerX = W / 2;
 
@@ -61,7 +66,7 @@ export class GameScene extends Phaser.Scene {
     this.startGameTimer();
 
     this.input.on('pointermove', (pointer) => {
-      this.hammerX = Phaser.Math.Clamp(pointer.x, 60, W - 60);
+      this.hammerX = Phaser.Math.Clamp(pointer.x, this.playLeft + 30, this.playLeft + this.playWidth - 30);
     });
 
     this.input.on('pointerdown', () => {
@@ -284,7 +289,7 @@ export class GameScene extends Phaser.Scene {
           ease: 'Sine.easeInOut',
         });
 
-        const stayTime = Phaser.Math.Between(700, 2200);
+        const stayTime = Phaser.Math.Between(1400, 3200);
         mole.hideTimer = this.time.delayedCall(stayTime, () => {
           if (!mole.isHit && mole.isUp) {
             this.combo = 0;
@@ -346,6 +351,9 @@ export class GameScene extends Phaser.Scene {
     g.fillRect(HAMMER_HEAD_W / 2 - 10, -HAMMER_HEAD_H + 10, 4, HAMMER_HEAD_H - 6);
 
     this.hammerContainer.add(g);
+
+    // Rest pose: tilted back so head points up-right
+    this.hammerContainer.setAngle(-45);
   }
 
   smashHammer() {
@@ -354,11 +362,13 @@ export class GameScene extends Phaser.Scene {
 
     playWhoosh();
 
+    // Swing down: rotate forward so head arcs into moles
     this.tweens.add({
       targets: this.hammerContainer,
       y: this.hammerSmashY,
-      scaleX: 1.1, scaleY: 0.9,
-      duration: 80,
+      angle: 10,
+      scaleX: 1.1, scaleY: 0.95,
+      duration: 100,
       ease: 'Quad.easeIn',
       onComplete: () => {
         const didHit = this.checkHits();
@@ -371,11 +381,13 @@ export class GameScene extends Phaser.Scene {
           this.updateComboText();
         }
 
+        // Swing back up to rest tilt
         this.tweens.add({
           targets: this.hammerContainer,
           y: this.hammerRestY,
+          angle: -45,
           scaleX: 1, scaleY: 1,
-          duration: 350,
+          duration: 400,
           ease: 'Back.easeOut',
           onComplete: () => {
             this.isSmashing = false;
@@ -566,14 +578,14 @@ export class GameScene extends Phaser.Scene {
 
   startMoleTimer() {
     this.moleEvent = this.time.addEvent({
-      delay: 1200,
+      delay: 1800,
       callback: () => {
         this.popUpMole();
         const elapsed = GAME_DURATION - this.timeLeft;
-        if (elapsed > 10 && Math.random() < 0.3) {
+        if (elapsed > 20 && Math.random() < 0.2) {
           this.time.delayedCall(150, () => this.popUpMole());
         }
-        const newDelay = Math.max(350, 1200 - elapsed * 25);
+        const newDelay = Math.max(800, 1800 - elapsed * 18);
         this.moleEvent.delay = newDelay;
       },
       loop: true,
@@ -655,9 +667,9 @@ export class GameScene extends Phaser.Scene {
       duration: 400, delay: 600,
     });
 
-    const rating = this.score >= 200 ? 'Amazing!' :
-                   this.score >= 100 ? 'Great job!' :
-                   this.score >= 50 ? 'Nice try!' : 'Keep practicing!';
+    const rating = this.score >= 150 ? 'Amazing!' :
+                   this.score >= 80 ? 'Great job!' :
+                   this.score >= 30 ? 'Nice try!' : 'Keep practicing!';
 
     const ratingText = this.add.text(cx, H * 0.56, rating, {
       fontSize: '28px',
@@ -707,6 +719,10 @@ export class GameScene extends Phaser.Scene {
     }
     if (this.hammerShadow) {
       this.hammerShadow.x = this.hammerContainer.x;
+      const progress = (this.hammerContainer.y - this.hammerRestY) / (this.hammerSmashY - this.hammerRestY);
+      const p = Phaser.Math.Clamp(progress, 0, 1);
+      this.hammerShadow.setAlpha(0.05 + 0.15 * p);
+      this.hammerShadow.setScale(0.6 + 0.4 * p);
     }
   }
 }
