@@ -141,18 +141,13 @@ const SpeechManager = (function() {
     });
   }
 
-  // Check if any result matches the expected number
+  // Check if any result matches the expected number (exact match only —
+  // fuzzy matching caused false positives because French numbers like
+  // "soixante-deux" and "soixante-dix" differ by only 3 characters)
   function checkSpeechResult(results, expectedNumber) {
-    // Check exact match first
     for (var i = 0; i < results.length; i++) {
       if (matchesNumber(results[i].transcript, expectedNumber)) {
         return { matched: true, transcript: results[i].transcript };
-      }
-    }
-    // Fuzzy match
-    for (var j = 0; j < results.length; j++) {
-      if (fuzzyMatchesNumber(results[j].transcript, expectedNumber, 3)) {
-        return { matched: true, transcript: results[j].transcript };
       }
     }
     return { matched: false, transcript: results[0] ? results[0].transcript : '' };
