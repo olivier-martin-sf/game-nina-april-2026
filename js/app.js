@@ -28,9 +28,7 @@ function showScreen(screenId) {
   }
 
   // Cancel any ongoing speech when leaving a game
-  if (window.speechSynthesis) {
-    speechSynthesis.cancel();
-  }
+  SpeechManager.stopSpeaking();
 }
 
 function startGame() {

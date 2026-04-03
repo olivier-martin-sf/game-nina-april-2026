@@ -1,57 +1,76 @@
-// speech.js — Web Speech API wrapper for French TTS and STT
+// speech.js — ElevenLabs TTS + Web Speech Recognition wrapper
 
 const SpeechManager = (function() {
-  let frenchVoice = null;
-  let voicesLoaded = false;
-  const hasSynthesis = 'speechSynthesis' in window;
   const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
   const hasRecognition = !!SpeechRecognitionAPI;
 
-  // Load French voice
-  function loadVoices() {
-    if (!hasSynthesis) return;
-    const voices = speechSynthesis.getVoices();
-    if (voices.length > 0) {
-      // Prefer a French female voice
-      frenchVoice = voices.find(v => v.lang.startsWith('fr') && v.name.toLowerCase().includes('female'))
-        || voices.find(v => v.lang.startsWith('fr'))
-        || null;
-      voicesLoaded = true;
-    }
-  }
+  // ─── ElevenLabs TTS Configuration ───
+  // Replace these with your own ElevenLabs API key and voice ID.
+  // Get your API key at: https://elevenlabs.io/app/settings/api-keys
+  // Find voice IDs at: https://elevenlabs.io/app/voice-library
+  const XI_KEY = "your_elevenlabs_api_key_here";
+  const XI_VOICE = "your_voice_id_here";
 
-  if (hasSynthesis) {
-    loadVoices();
-    if (speechSynthesis.onvoiceschanged !== undefined) {
-      speechSynthesis.onvoiceschanged = loadVoices;
-    }
-  }
+  const audioCache = new Map();
+  let currentAudio = null;
 
-  // Speak text in French
-  function speak(text, options) {
-    options = options || {};
+  // Speak text in French using ElevenLabs
+  function speak(text) {
     return new Promise(function(resolve) {
-      if (!hasSynthesis) {
-        resolve();
-        return;
-      }
-      // Cancel any pending speech
-      speechSynthesis.cancel();
+      (async function() {
+        try {
+          // Stop any currently playing audio
+          if (currentAudio) { currentAudio.pause(); currentAudio = null; }
 
-      var utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'fr-FR';
-      utterance.rate = options.rate || 0.85;
-      utterance.pitch = options.pitch || 1.1;
-      utterance.volume = options.volume || 1;
-      if (frenchVoice) utterance.voice = frenchVoice;
-      utterance.onend = function() { resolve(); };
-      utterance.onerror = function() { resolve(); };
+          var url = audioCache.get(text);
+          if (!url) {
+            var res = await fetch(
+              'https://api.elevenlabs.io/v1/text-to-speech/' + XI_VOICE,
+              {
+                method: 'POST',
+                headers: {
+                  'xi-api-key': XI_KEY,
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  text: text,
+                  model_id: 'eleven_multilingual_v2',
+                  language_code: 'fr',
+                  apply_text_normalization: 'on',
+                  voice_settings: {
+                    stability: 0.55,
+                    similarity_boost: 0.8,
+                    speed: 0.85
+                  }
+                })
+              }
+            );
+            if (!res.ok) throw new Error('ElevenLabs API error ' + res.status);
+            var blob = await res.blob();
+            url = URL.createObjectURL(blob);
+            audioCache.set(text, url);
+          }
 
-      // Chrome bug: sometimes speech doesn't start without a tiny delay
-      setTimeout(function() {
-        speechSynthesis.speak(utterance);
-      }, 50);
+          var audio = new Audio(url);
+          currentAudio = audio;
+          audio.onended = function() { currentAudio = null; resolve(); };
+          audio.onerror = function() { currentAudio = null; resolve(); };
+          audio.play();
+        } catch (e) {
+          console.error('TTS error:', e);
+          currentAudio = null;
+          resolve();
+        }
+      })();
     });
+  }
+
+  // Stop any currently playing audio
+  function stopSpeaking() {
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio = null;
+    }
   }
 
   // Speak a number in French
@@ -67,13 +86,13 @@ const SpeechManager = (function() {
   function speakBravo() {
     var phrases = ['Bravo !', 'Super !', 'Génial !', 'Très bien !', 'Excellent !'];
     var phrase = phrases[Math.floor(Math.random() * phrases.length)];
-    return speak(phrase, { rate: 1, pitch: 1.2 });
+    return speak(phrase);
   }
 
   function speakEncourage() {
     var phrases = ['Essaie encore !', 'Presque !', 'Tu peux le faire !', 'Allez, encore un essai !'];
     var phrase = phrases[Math.floor(Math.random() * phrases.length)];
-    return speak(phrase, { rate: 0.9, pitch: 1.0 });
+    return speak(phrase);
   }
 
   // Listen for French speech, returns { transcript, confidence }
@@ -140,12 +159,12 @@ const SpeechManager = (function() {
   }
 
   return {
-    hasSynthesis: hasSynthesis,
     hasRecognition: hasRecognition,
     speak: speak,
     speakNumber: speakNumber,
     speakBravo: speakBravo,
     speakEncourage: speakEncourage,
+    stopSpeaking: stopSpeaking,
     listen: listen,
     checkSpeechResult: checkSpeechResult
   };
