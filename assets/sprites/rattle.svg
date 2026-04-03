@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 128" width="384" height="128">
+  <!-- Rattle Sprite Sheet: 3 frames, each 128x128, transparent background -->
+  <!-- Frame 0: Resting (upright, facing viewer) -->
+  <!-- Frame 1: Pushing forward (tilted, mid-swing) -->
+  <!-- Frame 2: Impact (fully extended, shockwave) -->
+
+  <defs>
+    <radialGradient id="rattleHead" cx="40%" cy="35%" r="55%">
+      <stop offset="0%" stop-color="#FF4444"/>
+      <stop offset="50%" stop-color="#E03030"/>
+      <stop offset="100%" stop-color="#B01818"/>
+    </radialGradient>
+    <radialGradient id="rattleHighlight" cx="35%" cy="30%" r="40%">
+      <stop offset="0%" stop-color="#FF8888" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#FF4444" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="handleGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#FFE4B5"/>
+      <stop offset="50%" stop-color="#FFDEAD"/>
+      <stop offset="100%" stop-color="#DEB887"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ==================== FRAME 0: RESTING ==================== -->
+  <g transform="translate(0,0)">
+    <!-- Handle -->
+    <rect x="58" y="68" width="12" height="50" rx="4" fill="url(#handleGrad)" stroke="#C4A56A" stroke-width="0.8"/>
+    <!-- Handle grip lines -->
+    <line x1="60" y1="90" x2="68" y2="90" stroke="#C4A56A" stroke-width="0.6" opacity="0.4"/>
+    <line x1="60" y1="98" x2="68" y2="98" stroke="#C4A56A" stroke-width="0.6" opacity="0.4"/>
+    <line x1="60" y1="106" x2="68" y2="106" stroke="#C4A56A" stroke-width="0.6" opacity="0.4"/>
+
+    <!-- Rattle head (oval/egg shape) -->
+    <ellipse cx="64" cy="46" rx="28" ry="26" fill="url(#rattleHead)"/>
+    <!-- Highlight -->
+    <ellipse cx="56" cy="38" rx="14" ry="12" fill="url(#rattleHighlight)"/>
+
+    <!-- Decorative dots -->
+    <circle cx="50" cy="40" r="3.5" fill="#FFD700" opacity="0.8"/>
+    <circle cx="64" cy="34" r="3" fill="#FFD700" opacity="0.7"/>
+    <circle cx="78" cy="42" r="3.5" fill="#FFD700" opacity="0.8"/>
+    <circle cx="56" cy="54" r="2.5" fill="#FFD700" opacity="0.6"/>
+    <circle cx="72" cy="52" r="2.5" fill="#FFD700" opacity="0.6"/>
+
+    <!-- Top cap -->
+    <ellipse cx="64" cy="22" rx="8" ry="5" fill="#B01818"/>
+    <ellipse cx="64" cy="21" rx="6" ry="3" fill="#E03030"/>
+
+    <!-- Bottom rim where head meets handle -->
+    <ellipse cx="64" cy="68" rx="14" ry="4" fill="#B01818" opacity="0.6"/>
+  </g>
+
+  <!-- ==================== FRAME 1: PUSHING FORWARD (tilted) ==================== -->
+  <g transform="translate(128,0)">
+    <g transform="translate(64,64) rotate(-15) translate(-64,-64)">
+      <!-- Handle -->
+      <rect x="58" y="68" width="12" height="50" rx="4" fill="url(#handleGrad)" stroke="#C4A56A" stroke-width="0.8"/>
+      <line x1="60" y1="90" x2="68" y2="90" stroke="#C4A56A" stroke-width="0.6" opacity="0.4"/>
+      <line x1="60" y1="98" x2="68" y2="98" stroke="#C4A56A" stroke-width="0.6" opacity="0.4"/>
+
+      <!-- Rattle head -->
+      <ellipse cx="64" cy="46" rx="28" ry="26" fill="url(#rattleHead)"/>
+      <ellipse cx="56" cy="38" rx="14" ry="12" fill="url(#rattleHighlight)"/>
+
+      <!-- Dots -->
+      <circle cx="50" cy="40" r="3.5" fill="#FFD700" opacity="0.8"/>
+      <circle cx="64" cy="34" r="3" fill="#FFD700" opacity="0.7"/>
+      <circle cx="78" cy="42" r="3.5" fill="#FFD700" opacity="0.8"/>
+      <circle cx="56" cy="54" r="2.5" fill="#FFD700" opacity="0.6"/>
+      <circle cx="72" cy="52" r="2.5" fill="#FFD700" opacity="0.6"/>
+
+      <!-- Top cap -->
+      <ellipse cx="64" cy="22" rx="8" ry="5" fill="#B01818"/>
+      <ellipse cx="64" cy="21" rx="6" ry="3" fill="#E03030"/>
+
+      <!-- Bottom rim -->
+      <ellipse cx="64" cy="68" rx="14" ry="4" fill="#B01818" opacity="0.6"/>
+    </g>
+
+    <!-- Motion lines -->
+    <line x1="30" y1="50" x2="18" y2="46" stroke="#E03030" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+    <line x1="28" y1="60" x2="14" y2="58" stroke="#E03030" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/>
+    <line x1="32" y1="70" x2="20" y2="70" stroke="#E03030" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/>
+  </g>
+
+  <!-- ==================== FRAME 2: IMPACT ==================== -->
+  <g transform="translate(256,0)">
+    <g transform="translate(64,64) rotate(-30) translate(-64,-64)">
+      <!-- Handle -->
+      <rect x="58" y="68" width="12" height="50" rx="4" fill="url(#handleGrad)" stroke="#C4A56A" stroke-width="0.8"/>
+
+      <!-- Rattle head (slightly squished on impact) -->
+      <ellipse cx="64" cy="46" rx="30" ry="24" fill="url(#rattleHead)"/>
+      <ellipse cx="56" cy="38" rx="14" ry="12" fill="url(#rattleHighlight)"/>
+
+      <!-- Dots -->
+      <circle cx="50" cy="40" r="3.5" fill="#FFD700" opacity="0.8"/>
+      <circle cx="64" cy="34" r="3" fill="#FFD700" opacity="0.7"/>
+      <circle cx="78" cy="42" r="3.5" fill="#FFD700" opacity="0.8"/>
+      <circle cx="56" cy="54" r="2.5" fill="#FFD700" opacity="0.6"/>
+      <circle cx="72" cy="52" r="2.5" fill="#FFD700" opacity="0.6"/>
+
+      <!-- Top cap -->
+      <ellipse cx="64" cy="24" rx="8" ry="5" fill="#B01818"/>
+      <ellipse cx="64" cy="23" rx="6" ry="3" fill="#E03030"/>
+
+      <!-- Bottom rim -->
+      <ellipse cx="64" cy="66" rx="15" ry="4" fill="#B01818" opacity="0.6"/>
+    </g>
+
+    <!-- Impact shockwave rings -->
+    <ellipse cx="38" cy="42" rx="12" ry="8" fill="none" stroke="#FFD700" stroke-width="2" opacity="0.5"/>
+    <ellipse cx="34" cy="40" rx="20" ry="14" fill="none" stroke="#FFD700" stroke-width="1.5" opacity="0.3"/>
+    <ellipse cx="30" cy="38" rx="28" ry="18" fill="none" stroke="#FFD700" stroke-width="1" opacity="0.15"/>
+
+    <!-- Impact lines -->
+    <line x1="22" y1="36" x2="8" y2="28" stroke="#FF5722" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+    <line x1="20" y1="48" x2="4" y2="48" stroke="#FF5722" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+    <line x1="24" y1="56" x2="10" y2="62" stroke="#FF5722" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+
+    <!-- Sand puffs -->
+    <circle cx="18" cy="52" r="4" fill="#F5DEB3" opacity="0.4"/>
+    <circle cx="12" cy="38" r="3" fill="#F5DEB3" opacity="0.3"/>
+    <circle cx="26" cy="62" r="3.5" fill="#F5DEB3" opacity="0.35"/>
+  </g>
+</svg>
