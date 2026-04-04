@@ -813,6 +813,266 @@ h1, h2, h3 {
   animation: shake 0.4s ease;
 }
 
+/* ==================== GAME 5: PRESQUE DOUBLES ==================== */
+.game5-levels, .game5-play {
+  width: 100%;
+}
+
+/* Cube display */
+.cube-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: 16px auto;
+  flex-wrap: wrap;
+}
+
+.cube-group {
+  position: relative;
+  transition: all 0.4s ease;
+}
+
+.cube-group.cube-highlighted {
+  outline: 3px solid #E74C3C;
+  outline-offset: 6px;
+  border-radius: 8px;
+  animation: rectDraw 0.5s ease forwards;
+}
+
+@keyframes rectDraw {
+  0% { outline-color: transparent; }
+  100% { outline-color: #E74C3C; }
+}
+
+.cube-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 36px);
+  gap: 4px;
+}
+
+.cube {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  animation: cubeAppear 0.3s ease backwards;
+}
+
+.cube-blue {
+  background: linear-gradient(135deg, #5BA3D9 0%, #4A90D9 50%, #3A7BC8 100%);
+  box-shadow: 0 2px 4px rgba(74, 144, 217, 0.4), inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+.cube-orange {
+  background: linear-gradient(135deg, #F7B267 0%, #F4A261 50%, #E8924C 100%);
+  box-shadow: 0 2px 4px rgba(244, 162, 97, 0.4), inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+@keyframes cubeAppear {
+  0% { transform: scale(0); opacity: 0; }
+  60% { transform: scale(1.15); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.cube-op {
+  font-family: 'Baloo 2', cursive;
+  font-size: 36px;
+  color: var(--text-light);
+}
+
+.cube-group-extra {
+  display: flex;
+  align-items: flex-start;
+}
+
+.cube-separate-anim {
+  animation: cubeSeparate 0.6s ease backwards;
+  animation-delay: 0.3s;
+  margin-left: 8px;
+}
+
+@keyframes cubeSeparate {
+  0% { transform: translateX(-12px); opacity: 0.5; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+/* Equation area */
+.game5-equation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 16px auto;
+  flex-wrap: wrap;
+  min-height: 60px;
+}
+
+.eq-num {
+  font-family: 'Baloo 2', cursive;
+  font-size: 48px;
+}
+
+.eq-op {
+  font-family: 'Baloo 2', cursive;
+  font-size: 40px;
+  color: var(--text-light);
+}
+
+.eq-blue { color: #4A90D9; }
+.eq-orange { color: #F4A261; }
+.eq-green { color: var(--color-green); }
+.eq-placeholder { color: var(--color-purple); }
+
+.eq-fade-in {
+  animation: eqFadeIn 0.5s ease backwards;
+}
+
+@keyframes eqFadeIn {
+  0% { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Tree decomposition */
+.tree-decomp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 12px auto;
+  animation: eqFadeIn 0.5s ease;
+  max-width: 200px;
+}
+
+.tree-top {
+  margin-bottom: 0;
+}
+
+.tree-number {
+  font-family: 'Baloo 2', cursive;
+  font-size: 36px;
+  color: var(--text-dark);
+}
+
+.tree-branches {
+  position: relative;
+  width: 100px;
+  height: 30px;
+}
+
+.tree-branch-left,
+.tree-branch-right {
+  position: absolute;
+  top: 0;
+  width: 50px;
+  height: 30px;
+  border: none;
+}
+
+.tree-branch-left {
+  left: 0;
+  border-right: 2.5px solid #2C5F8A;
+  border-bottom: 2.5px solid #2C5F8A;
+  border-bottom-right-radius: 12px;
+  transform-origin: top right;
+}
+
+.tree-branch-right {
+  right: 0;
+  border-left: 2.5px solid #2C5F8A;
+  border-bottom: 2.5px solid #2C5F8A;
+  border-bottom-left-radius: 12px;
+  transform-origin: top left;
+}
+
+.tree-bottom {
+  display: flex;
+  justify-content: space-between;
+  width: 100px;
+}
+
+.tree-child {
+  font-family: 'Baloo 2', cursive;
+  font-size: 32px;
+  color: #2C5F8A;
+  padding: 0 4px;
+}
+
+.tree-left.tree-highlighted {
+  background: rgba(231, 76, 60, 0.15);
+  border-radius: 8px;
+  outline: 2px solid #E74C3C;
+}
+
+.tree-right {
+  color: #F4A261;
+}
+
+/* Semi-guided inputs */
+.semi-inputs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 16px auto;
+  flex-wrap: wrap;
+}
+
+.semi-input-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.semi-label {
+  font-family: 'Baloo 2', cursive;
+  font-size: 28px;
+  color: var(--text-dark);
+}
+
+.answer-input-small {
+  font-family: 'Baloo 2', cursive;
+  font-size: 36px;
+  width: 80px;
+  padding: 6px 10px;
+  border: 3px solid var(--color-green-light);
+  border-radius: 14px;
+  text-align: center;
+  outline: none;
+  background: white;
+  color: var(--text-dark);
+  transition: border-color 0.3s, background 0.3s;
+  -moz-appearance: textfield;
+}
+
+.answer-input-small::-webkit-outer-spin-button,
+.answer-input-small::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.answer-input-small:focus {
+  border-color: var(--color-green);
+}
+
+.answer-input-small.correct {
+  border-color: var(--color-green);
+  background: var(--color-green-light);
+}
+
+.answer-input-small.wrong {
+  border-color: var(--color-orange);
+  background: var(--color-orange-light);
+  animation: shake 0.4s ease;
+}
+
+/* Reminder label */
+.reminder-label {
+  font-family: 'Baloo 2', cursive;
+  font-size: 22px;
+  color: var(--color-orange);
+  margin-bottom: 8px;
+  animation: pulse 1s ease-in-out 2;
+}
+
 /* ==================== SPEECH RECOGNITION FALLBACK BANNER ==================== */
 .sr-banner {
   background: var(--color-blue-light);
@@ -863,5 +1123,37 @@ h1, h2, h3 {
   .backpack-sticker {
     font-size: 36px;
     padding: 8px;
+  }
+
+  /* Game 5 responsive */
+  .cube-grid {
+    grid-template-columns: repeat(2, 28px);
+    gap: 3px;
+  }
+  .cube {
+    width: 28px;
+    height: 28px;
+  }
+  .cube-op {
+    font-size: 28px;
+  }
+  .eq-num {
+    font-size: 36px;
+  }
+  .eq-op {
+    font-size: 30px;
+  }
+  .tree-number {
+    font-size: 28px;
+  }
+  .tree-child {
+    font-size: 24px;
+  }
+  .semi-label {
+    font-size: 22px;
+  }
+  .answer-input-small {
+    font-size: 28px;
+    width: 65px;
   }
 }

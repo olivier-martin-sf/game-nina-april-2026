@@ -63,6 +63,12 @@
           <p>Calcule le double des nombres</p>
           <span class="game-card-range">1 → 20</span>
         </div>
+        <div class="game-card game-card-green" onclick="showScreen('game5')">
+          <div class="game-card-emoji">🔢</div>
+          <h2>Presque Doubles !</h2>
+          <p>Additionne les nombres presque jumeaux</p>
+          <span class="game-card-range">1 → 10</span>
+        </div>
       </div>
     </div>
   </div>
@@ -228,6 +234,66 @@
     </div>
   </div>
 
+  <!-- ==================== GAME 5: PRESQUE DOUBLES ==================== -->
+  <div id="screen-game5" class="screen">
+    <div class="game-topbar">
+      <button class="btn btn-small btn-back" onclick="game5BackToLevels()">← Retour</button>
+      <div class="game-score">Score : <span id="game5-score">0</span></div>
+    </div>
+    <div class="game-container">
+      <!-- Level selection -->
+      <div id="game5-levels" class="game5-levels">
+        <h2 class="game-title">🔢 Presque Doubles !</h2>
+        <p class="game-instruction">Choisis ton niveau</p>
+        <div class="level-cards">
+          <div class="game-card game-card-green" onclick="game5Start('guided')">
+            <div class="game-card-emoji">🐣</div>
+            <h2>Avec aide</h2>
+            <p>Je te montre comment faire</p>
+          </div>
+          <div class="game-card game-card-orange" onclick="game5Start('semi')">
+            <div class="game-card-emoji">🦊</div>
+            <h2>Un peu d'aide</h2>
+            <p>Trouve le double et le résultat</p>
+          </div>
+          <div class="game-card game-card-purple" onclick="game5Start('independent')">
+            <div class="game-card-emoji">🦅</div>
+            <h2>Tout seul !</h2>
+            <p>À toi de jouer sans aide</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Play area -->
+      <div id="game5-play" class="game5-play hidden">
+        <h2 class="game-title" id="game5-level-title">🔢 Presque Doubles !</h2>
+        <p class="game-instruction" id="game5-instruction">Regarde bien !</p>
+
+        <!-- Cubes visualization -->
+        <div id="game5-cube-area"></div>
+
+        <!-- Equation display -->
+        <div id="game5-equation-area" class="game5-equation"></div>
+
+        <!-- Tree decomposition area -->
+        <div id="game5-decomp-area"></div>
+
+        <!-- Answer input area -->
+        <div id="game5-input-area" style="margin: 16px auto; text-align: center;"></div>
+
+        <button class="btn btn-big btn-green" onclick="game5Submit()" id="game5-validate">
+          Valider ✅
+        </button>
+
+        <div id="game5-feedback" class="feedback"></div>
+
+        <button id="game5-next" class="btn btn-big btn-green hidden" onclick="game5Next()">
+          Suivant →
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- ==================== BACKPACK SCREEN ==================== -->
   <div id="screen-backpack" class="screen">
     <div class="game-topbar">
@@ -266,6 +332,7 @@
   <script src="js/game-ecoute.js"></script>
   <script src="js/game-descente.js"></script>
   <script src="js/game-doubles.js"></script>
+  <script src="js/game-presque-doubles.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
